@@ -19,18 +19,6 @@ const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   loading: () => <div className="min-h-72 animate-pulse rounded-xl bg-[#f7f3ed]" />,
 });
 
-const CATEGORIES = [
-  { slug: "news", name: "ताज़ा खबरें और रिपोर्ट" },
-  { slug: "farming", name: "खेती-बाड़ी" },
-  { slug: "pashupalan", name: "पशुपालन" },
-  { slug: "kisan", name: "किसान" },
-  { slug: "wisdom", name: "बुजुर्गों की सीख" },
-  { slug: "history", name: "इतिहास और विरासत" },
-  { slug: "heritage", name: "सांस्कृतिक विरासत" },
-  { slug: "food", name: "खान-पान" },
-  { slug: "__new__", name: "नई श्रेणी जोड़ें" },
-];
-
 type Article = {
   id?: string | number;
   title?: string | null;
@@ -53,7 +41,13 @@ type Article = {
 
 type ArticleStatus = "all" | "draft" | "in_review" | "published" | "scheduled";
 
-export default function ArticleManager({ articles }: { articles: Article[] }) {
+export default function ArticleManager({
+  articles,
+  categories,
+}: {
+  articles: Article[];
+  categories: Array<{ slug: string; name: string }>;
+}) {
   const router = useRouter();
   const [editingId, setEditingId] = useState("");
   const [formOpen, setFormOpen] = useState(false);
@@ -67,8 +61,6 @@ export default function ArticleManager({ articles }: { articles: Article[] }) {
   const [imageCaption, setImageCaption] = useState("");
   const [imageCredit, setImageCredit] = useState("");
   const [tags, setTags] = useState("");
-  const [customCategoryName, setCustomCategoryName] = useState("");
-  const [customCategorySlug, setCustomCategorySlug] = useState("");
   const [scheduledFor, setScheduledFor] = useState("");
   const [readingTime, setReadingTime] = useState("3");
   const [showPreview, setShowPreview] = useState(false);
@@ -117,8 +109,6 @@ export default function ArticleManager({ articles }: { articles: Article[] }) {
     formData.set("featured_image_caption", imageCaption.trim());
     formData.set("featured_image_credit", imageCredit.trim());
     formData.set("tags", tags);
-    formData.set("custom_category_name", customCategoryName.trim());
-    formData.set("custom_category_slug", customCategorySlug.trim());
     formData.set("scheduled_for", scheduledFor);
     formData.set("reading_time_minutes", readingTime);
     formData.set("status", status);
@@ -149,8 +139,6 @@ export default function ArticleManager({ articles }: { articles: Article[] }) {
           setImageCaption("");
           setImageCredit("");
           setTags("");
-          setCustomCategoryName("");
-          setCustomCategorySlug("");
           setScheduledFor("");
           setReadingTime("3");
           setCategorySlug("history");
@@ -257,8 +245,6 @@ export default function ArticleManager({ articles }: { articles: Article[] }) {
     setImageCaption(String(article.featured_image_caption ?? ""));
     setImageCredit(String(article.featured_image_credit ?? ""));
     setTags(Array.isArray(article.tags) ? article.tags.join(", ") : "");
-    setCustomCategoryName("");
-    setCustomCategorySlug("");
     setScheduledFor(article.scheduled_for ? article.scheduled_for.slice(0, 16) : "");
     setReadingTime(String(article.reading_time_minutes ?? Math.max(1, Math.round(String(article.body ?? "").trim().split(/\s+/).length / 200))));
     setMessage("");
@@ -284,8 +270,6 @@ export default function ArticleManager({ articles }: { articles: Article[] }) {
     setImageCaption("");
     setImageCredit("");
     setTags("");
-    setCustomCategoryName("");
-    setCustomCategorySlug("");
     setScheduledFor("");
     setReadingTime("3");
     setMessage("");
@@ -340,7 +324,7 @@ export default function ArticleManager({ articles }: { articles: Article[] }) {
                 onChange={(e) => setCategorySlug(e.target.value)}
                 className="w-full rounded-xl border border-[#e7ddd0] bg-[#F7F6EE] px-4 py-3 outline-none focus:border-[#8a4b1f]"
               >
-                {CATEGORIES.map((category) => (
+                {categories.map((category) => (
                   <option key={category.slug} value={category.slug}>
                     {category.name}
                   </option>
@@ -349,12 +333,6 @@ export default function ArticleManager({ articles }: { articles: Article[] }) {
               <p className="mt-1 text-xs text-gray-500">
                 लेख वेबसाइट पर इसी चुनी गई श्रेणी के ब्लॉक में दिखेगा।
               </p>
-              {categorySlug === "__new__" && (
-                <div className="mt-3 grid gap-3 md:grid-cols-2">
-                  <input value={customCategoryName} onChange={(event) => setCustomCategoryName(event.target.value)} required minLength={2} placeholder="नई श्रेणी का नाम" className="rounded-xl border border-[#e7ddd0] px-4 py-3" />
-                  <input value={customCategorySlug} onChange={(event) => setCustomCategorySlug(event.target.value)} required pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="English URL name, जैसे recipes" className="rounded-xl border border-[#e7ddd0] px-4 py-3" />
-                </div>
-              )}
             </div>
 
             <CloudinaryImageField

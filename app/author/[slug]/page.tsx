@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
+import { FiFileText } from "react-icons/fi";
 import {
   getAuthorBySlug,
   getArticlesByAuthor,
@@ -129,7 +130,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
 
               <div className="pt-1 flex items-center justify-center sm:justify-start gap-4 text-xs font-bold text-[#777]">
                 <span className="flex items-center gap-1.5">
-                  <span className="text-[#8a4b1f]">📰</span>
+                  <FiFileText aria-hidden="true" className="h-4 w-4 text-[#8a4b1f]" />
                   {articles.length} प्रकाशित लेख
                 </span>
                 <span>•</span>

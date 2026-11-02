@@ -3,7 +3,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition, useRef } from "react";
 import { createArticle } from "../actions";
 import type { RichTextDocument } from "@/lib/rich-text";
 import CloudinaryImageField from "@/components/admin/CloudinaryImageField";
@@ -15,7 +15,7 @@ const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ),
 });
 
-const CATEGORIES = [
+const DEFAULT_CATEGORIES = [
   { slug: "news", name: "ताज़ा खबरें और रिपोर्ट (लेटेस्ट अपडेट्स)" },
   { slug: "farming", name: "खेती-बाड़ी" },
   { slug: "pashupalan", name: "पशुपालन" },
@@ -24,16 +24,76 @@ const CATEGORIES = [
   { slug: "history", name: "इतिहास और विरासत" },
   { slug: "heritage", name: "सांस्कृतिक विरासत" },
   { slug: "food", name: "खान-पान" },
-  { slug: "__new__", name: "नई श्रेणी जोड़ें" },
 ];
 
 export default function NewArticlePage() {
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
+  // Track whether user has manually edited the slug
+  const slugEditedByUser = useRef(false);
+
+  /** Convert any string to a URL-safe slug (Latin + Devanagari → transliterated) */
+  function toSlug(text: string): string {
+    // Devanagari consonants — each carries implicit 'a' unless followed by matra/virama
+    const consonants: Record<string, string> = {
+      "\u0915":"k","\u0916":"kh","\u0917":"g","\u0918":"gh","\u0919":"ng",
+      "\u091a":"ch","\u091b":"chh","\u091c":"j","\u091d":"jh","\u091e":"ny",
+      "\u091f":"t","\u0920":"th","\u0921":"d","\u0922":"dh","\u0923":"n",
+      "\u0924":"t","\u0925":"th","\u0926":"d","\u0927":"dh","\u0928":"n",
+      "\u092a":"p","\u092b":"f","\u092c":"b","\u092d":"bh","\u092e":"m",
+      "\u092f":"y","\u0930":"r","\u0932":"l","\u0935":"v",
+      "\u0936":"sh","\u0937":"sh","\u0938":"s","\u0939":"h","\u0933":"l",
+    };
+    // Independent vowels
+    const vowels: Record<string, string> = {
+      "\u0905":"a","\u0906":"aa","\u0907":"i","\u0908":"ee",
+      "\u0909":"u","\u090a":"oo","\u090f":"e","\u0910":"ai",
+      "\u0913":"o","\u0914":"au","\u0911":"o",
+    };
+    // Dependent vowel signs (matras)
+    const matras: Record<string, string> = {
+      "\u093e":"a","\u093f":"i","\u0940":"ee","\u0941":"u","\u0942":"oo",
+      "\u0947":"e","\u0948":"ai","\u094b":"o","\u094c":"au",
+      "\u0902":"n","\u0903":"","\u0901":"",
+    };
+    const virama = "\u094d"; // halant ्
+
+    const chars = [...text];
+    let result = "";
+
+    for (let i = 0; i < chars.length; i++) {
+      const ch = chars[i];
+      const next = chars[i + 1];
+      if (ch in consonants) {
+        result += consonants[ch];
+        // Add implicit 'a' unless next char is a matra or virama
+        if (next !== virama && !(next in matras)) {
+          result += "a";
+        }
+      } else if (ch in vowels) {
+        result += vowels[ch];
+      } else if (ch in matras) {
+        result += matras[ch];
+      } else if (ch === virama) {
+        // skip — halant suppresses implicit vowel
+      } else {
+        result += ch;
+      }
+    }
+
+    return result
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .slice(0, 90);
+  }
   const [excerpt, setExcerpt] = useState("");
   const [content, setContent] = useState("");
   const [contentJson, setContentJson] = useState("");
   const [categorySlug, setCategorySlug] = useState("history");
+  const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
   const [imageUrl, setImageUrl] = useState("");
   const [imageAlt, setImageAlt] = useState("");
   const [tags, setTags] = useState("");
@@ -45,9 +105,42 @@ export default function NewArticlePage() {
   const [scheduledFor, setScheduledFor] = useState("");
   const [readingTime, setReadingTime] = useState("3");
   const [message, setMessage] = useState("");
+  const [isSuccessMessage, setIsSuccessMessage] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+
+  useEffect(() => {
+    if (!message || !isSuccessMessage) return;
+
+    const timer = window.setTimeout(() => {
+      setMessage("");
+      setIsSuccessMessage(false);
+    }, 1000);
+
+    return () => window.clearTimeout(timer);
+  }, [isSuccessMessage, message]);
+
+  function refreshCategories() {
+    fetch("/api/admin/categories")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data: unknown) => {
+        if (!Array.isArray(data)) return;
+        const validCategories = data.filter(
+          (category): category is { slug: string; name: string } =>
+            typeof category?.slug === "string" &&
+            typeof category?.name === "string",
+        );
+        if (validCategories.length) setCategories(validCategories);
+      })
+      .catch(() => undefined);
+  }
+
+  useEffect(() => {
+    refreshCategories();
+    window.addEventListener("focus", refreshCategories);
+    return () => window.removeEventListener("focus", refreshCategories);
+  }, []);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -63,17 +156,20 @@ export default function NewArticlePage() {
     formData.set("status", status);
     formData.set("category_slug", categorySlug);
     setMessage("");
+    setIsSuccessMessage(false);
 
     startTransition(async () => {
       try {
         const result = await createArticle(formData);
         setMessage(result.message);
+        setIsSuccessMessage(result.success);
 
         if (result.success) {
           router.replace("/admin/articles");
           router.refresh();
         }
       } catch {
+        setIsSuccessMessage(false);
         setMessage("लेख सेव नहीं हुआ। दोबारा कोशिश करें।");
       }
     });
@@ -112,7 +208,13 @@ export default function NewArticlePage() {
               <input
                 name="title"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  // Auto-generate slug from title unless user manually edited it
+                  if (!slugEditedByUser.current) {
+                    setSlug(toSlug(e.target.value));
+                  }
+                }}
                 required
                 minLength={3}
                 maxLength={70}
@@ -129,15 +231,21 @@ export default function NewArticlePage() {
               <input
                 name="slug"
                 value={slug}
-                onChange={(e) => setSlug(e.target.value.toLowerCase())}
+                onChange={(e) => {
+                  slugEditedByUser.current = true;
+                  setSlug(e.target.value.toLowerCase());
+                }}
                 required
                 minLength={5}
                 maxLength={90}
-                pattern="[a-z0-9]+(-[a-z0-9]+){2,5}"
+                pattern="[a-z0-9]+(-[a-z0-9]+)*"
                 placeholder="jaise: bajra-kheti-ke-tarike"
                 className="w-full rounded-xl border border-[#e7ddd0] px-4 py-3 outline-none focus:border-[#8a4b1f]"
               />
               {/* <p className="mt-1 text-xs text-gray-500">3-6 English words, lowercase aur hyphen ke saath.</p> */}
+              <p className="mt-1 text-xs text-gray-500">
+                शीर्षक से auto-fill होता है • बदलना हो तो खुद टाइप करें
+              </p>
             </div>
 
             {/* Excerpt */}
@@ -194,33 +302,16 @@ export default function NewArticlePage() {
               <select
                 name="category_slug"
                 value={categorySlug}
+                onFocus={refreshCategories}
                 onChange={(e) => setCategorySlug(e.target.value)}
                 className="w-full rounded-xl border border-[#e7ddd0] bg-[#F7F6EE] px-4 py-3 outline-none focus:border-[#8a4b1f]"
               >
-                {CATEGORIES.map((cat) => (
+                {categories.map((cat) => (
                   <option key={cat.slug} value={cat.slug}>
                     {cat.name}
                   </option>
                 ))}
               </select>
-              {categorySlug === "__new__" && (
-                <div className="mt-3 grid gap-3 md:grid-cols-2">
-                  <input
-                    name="custom_category_name"
-                    required
-                    minLength={2}
-                    placeholder="नई श्रेणी का नाम, जैसे रेसिपी"
-                    className="rounded-xl border border-[#e7ddd0] px-4 py-3 outline-none focus:border-[#8a4b1f]"
-                  />
-                  <input
-                    name="custom_category_slug"
-                    required
-                    pattern="[a-z0-9]+(-[a-z0-9]+)*"
-                    placeholder="English URL नाम, जैसे recipes"
-                    className="rounded-xl border border-[#e7ddd0] px-4 py-3 outline-none focus:border-[#8a4b1f]"
-                  />
-                </div>
-              )}
             </div>
 
             {/* Featured Image URL */}

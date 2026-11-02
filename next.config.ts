@@ -94,6 +94,25 @@ const nextConfig: NextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
   trailingSlash: true,
+  async redirects() {
+    return [
+      {
+        source: "/category",
+        destination: "/categories",
+        permanent: true,
+      },
+      {
+        source: "/category/:slug",
+        destination: "/categories/:slug",
+        permanent: true,
+      },
+      {
+        source: "/category/:slug/:page",
+        destination: "/categories/:slug/:page",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

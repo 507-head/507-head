@@ -8,6 +8,7 @@ import {
 } from "@/lib/content";
 import ArticleBody from "@/components/ArticleBody";
 import ArticleShareRow from "@/components/ArticleShareRow";
+import { FiEdit3 } from "react-icons/fi";
 
 export const instant = false;
 
@@ -124,7 +125,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         "@type": "ListItem",
         position: 2,
         name: article.category_name,
-        item: `${siteUrl}/category/${article.category_slug}/`,
+        item: `${siteUrl}/categories/${article.category_slug}/`,
       },
       {
         "@type": "ListItem",
@@ -176,7 +177,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </Link>
           <span>›</span>
           <Link
-            href={`/category/${article.category_slug}`}
+            href={`/categories/${article.category_slug}`}
             className="hover:underline"
           >
             {article.category_name}
@@ -188,7 +189,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {/* Category Pill */}
         <div className="mb-4">
           <Link
-            href={`/category/${article.category_slug}`}
+            href={`/categories/${article.category_slug}`}
             className="inline-block rounded-full bg-[#8a4b1f]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-[#8a4b1f] hover:bg-[#8a4b1f]/20"
           >
             {article.category_name}
@@ -208,8 +209,11 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         {/* Author & Publication Meta Bar */}
         <div className="flex flex-wrap items-center justify-between gap-4 border-y border-[#e5ddd3] py-4 mb-8 text-sm text-[#666]">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#F7F4DE] border border-[#e5ddd3] text-lg font-bold text-[#8a4b1f]">
-              ✍️
+            <div
+              aria-hidden="true"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-[#e5ddd3] bg-[#F7F4DE] text-[#8a4b1f]"
+            >
+              <FiEdit3 className="h-5 w-5" />
             </div>
             <div>
               <Link
@@ -265,7 +269,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {/* Tags Row */}
         {article.tags && article.tags.length > 0 && (
-          <div className="mt-12 border-t border-[#e5ddd3] pt-6">
+          <div className="mt-8">
             <span className="text-xs font-bold uppercase tracking-wider text-[#888] block mb-3">
               संबंधित विषय (Tags):
             </span>
@@ -284,8 +288,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {/* Author Bio Box */}
         <div className="mt-12 rounded-2xl border border-[#e5ddd3] bg-[#F7F6EE] p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-5">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-[#F7F4DE] border border-[#e5ddd3] text-2xl">
-            📰
+          <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-full border border-[#e5ddd3] bg-[#F7F4DE] sm:h-24 sm:w-24">
+            <Image
+              src="/images/507-head-logo-brown.png"
+              alt="507 Head"
+              fill
+              sizes="(max-width: 640px) 72px, 96px"
+              className="object-contain p-1.5 mix-blend-multiply sm:p-2"
+            />
           </div>
           <div className="text-center sm:text-left">
             <span className="text-xs font-bold uppercase tracking-wider text-[#8a4b1f]">
@@ -326,7 +336,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 </h2>
               </div>
               <Link
-                href={`/category/${article.category_slug}`}
+                href={`/categories/${article.category_slug}`}
                 className="text-xs font-bold text-[#8a4b1f] hover:underline"
               >
                 सभी देखें →

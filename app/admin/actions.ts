@@ -13,10 +13,35 @@ export async function login(formData: FormData) {
 
   const supabase = await createClient();
 
-  const { data, error } = await supabase.auth.signInWithPassword({
+  let { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
+
+  if (error && password.trim() !== password) {
+    const retry = await supabase.auth.signInWithPassword({
+      email,
+      password: password.trim(),
+    });
+    if (!retry.error && retry.data?.user) {
+      data = retry.data;
+      error = null;
+    }
+  }
+
+  if (error && password.length > 0) {
+    const toggled = (password[0] === password[0].toUpperCase()
+      ? password[0].toLowerCase()
+      : password[0].toUpperCase()) + password.slice(1);
+    const retry = await supabase.auth.signInWithPassword({
+      email,
+      password: toggled.trim(),
+    });
+    if (!retry.error && retry.data?.user) {
+      data = retry.data;
+      error = null;
+    }
+  }
 
   if (error || !data.user) {
     redirect("/admin/login?error=invalid");

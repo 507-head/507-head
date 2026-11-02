@@ -2,6 +2,8 @@ export const instant = false;
 
 import Link from "next/link";
 import { login } from "../actions";
+import LoginErrorNotice from "./LoginErrorNotice";
+import PasswordInput from "./PasswordInput";
 
 type LoginPageProps = {
   searchParams: Promise<{ error?: string }>;
@@ -106,10 +108,7 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
           </p>
 
           {error && messages[error] && (
-            <div className="login-error" role="alert">
-              <span>!</span>
-              {messages[error]}
-            </div>
+            <LoginErrorNotice message={messages[error]} />
           )}
 
           <form action={login} className="login-form">
@@ -149,31 +148,7 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
                 <span>Authorized users only</span>
               </div>
 
-              <div className="input-wrap">
-                <svg
-                  viewBox="0 0 24 24"
-                  width="19"
-                  height="19"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.7"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <rect x="4" y="10" width="16" height="11" rx="2.5" />
-                  <path d="M8 10V7a4 4 0 0 1 8 0v3" />
-                </svg>
-
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  placeholder="अपना password दर्ज करें"
-                  autoComplete="current-password"
-                  required
-                />
-              </div>
+              <PasswordInput />
             </div>
 
             <button type="submit" className="login-button">
@@ -639,6 +614,23 @@ export default async function AdminLoginPage({ searchParams }: LoginPageProps) {
 
         .card-security svg {
           flex-shrink: 0;
+          color: var(--brand);
+        }
+
+        .password-toggle-btn {
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          padding: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--muted);
+          transition: color 0.2s;
+          margin-left: auto;
+        }
+
+        .password-toggle-btn:hover {
           color: var(--brand);
         }
 

@@ -58,8 +58,8 @@ function getSeoValidationError(values: {
   socialDescription: string;
   socialImageUrl: string;
 }) {
-  if (values.slug && !/^[a-z0-9]+(?:-[a-z0-9]+){2,5}$/.test(values.slug)) {
-    return "SEO URL slug mein 3-6 lowercase English words aur hyphens hi use karein.";
+  if (values.slug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(values.slug)) {
+    return "SEO URL slug mein sirf lowercase English letters, numbers aur hyphens use karein.";
   }
   if (values.seoTitle.length > 70 || values.socialTitle.length > 70) {
     return "SEO aur social title 70 characters se zyada nahi ho sakte.";
@@ -121,12 +121,15 @@ async function getAdminClient() {
 
 function refreshArticles(paths?: { slug?: string; categorySlug?: string }) {
   updateTag("published-articles");
+  updateTag("categories");
   revalidatePath("/admin/articles", "page");
   revalidatePath("/admin/articles/new", "page");
   revalidatePath("/admin", "page");
   revalidatePath("/");
   revalidatePath("/sitemap.xml");
   revalidatePath("/rss.xml");
+  revalidatePath("/category/[slug]", "page");
+  revalidatePath("/category/[slug]/[page]", "page");
   if (paths?.slug) revalidatePath(`/blog/${paths.slug}`);
   if (paths?.categorySlug) revalidatePath(`/category/${paths.categorySlug}`);
 }
@@ -146,13 +149,7 @@ export async function createArticle(formData: FormData): Promise<ActionResult> {
     ? richTextSummary(richText)
     : getTextValue(formData, "content") || getTextValue(formData, "body");
   const excerpt = getTextValue(formData, "excerpt");
-  const selectedCategorySlug = getTextValue(formData, "category_slug");
-  const customCategoryName = getTextValue(formData, "custom_category_name");
-  const customCategorySlug = getTextValue(formData, "custom_category_slug");
-  const categorySlug =
-    selectedCategorySlug === "__new__"
-      ? customCategorySlug
-      : selectedCategorySlug;
+  const categorySlug = getTextValue(formData, "category_slug");
   const featuredImageUrl = getTextValue(formData, "featured_image_url");
   const featuredImageAlt =
     getTextValue(formData, "featured_image_alt") || title;
@@ -249,17 +246,6 @@ export async function createArticle(formData: FormData): Promise<ActionResult> {
     authorId = defaultAuthor?.id || null;
   }
 
-  const CAT_NAMES: Record<string, string> = {
-    news: "ताज़ा खबरें और रिपोर्ट",
-    farming: "खेती-बाड़ी",
-    pashupalan: "पशुपालन",
-    kisan: "किसान",
-    wisdom: "बुजुर्गों की सीख",
-    history: "इतिहास और विरासत",
-    heritage: "सांस्कृतिक विरासत",
-    food: "खान-पान",
-  };
-
   let categoryId: string | null = null;
   if (categorySlug) {
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(categorySlug)) {
@@ -275,40 +261,13 @@ export async function createArticle(formData: FormData): Promise<ActionResult> {
       .eq("slug", categorySlug)
       .maybeSingle();
 
-    if (!catData?.id && selectedCategorySlug !== "__new__") {
+    if (!catData?.id) {
       return {
         success: false,
-        message: "चुनी हुई fixed category अभी Supabase में configured नहीं है।",
+        message: "चुनी हुई श्रेणी उपलब्ध नहीं है। पहले Categories में इसे जोड़ें।",
       };
     }
-
-    if (catData?.id) {
-      categoryId = catData.id;
-    } else {
-      if (role !== "admin") {
-        return {
-          success: false,
-          message: "नई श्रेणी केवल admin जोड़ सकता है।",
-        };
-      }
-      if (customCategoryName.length < 2) {
-        return { success: false, message: "नई श्रेणी का नाम भरें।" };
-      }
-      const { data: newCat } = await supabase
-        .from("categories")
-        .insert({
-          name: customCategoryName || CAT_NAMES[categorySlug] || categorySlug,
-          slug: categorySlug,
-          description:
-            customCategoryName || CAT_NAMES[categorySlug] || categorySlug,
-          sort_order: 1,
-          is_active: true,
-          show_on_home: true,
-        })
-        .select("id")
-        .maybeSingle();
-      categoryId = newCat?.id || null;
-    }
+    categoryId = catData.id;
   }
 
   const articlePayload: Record<string, unknown> = {
@@ -387,7 +346,7 @@ export async function createArticle(formData: FormData): Promise<ActionResult> {
     }
   }
 
-  refreshArticles();
+  refreshArticles({ slug, categorySlug });
 
   return {
     success: true,
@@ -473,12 +432,8 @@ export async function updateArticle(formData: FormData): Promise<ActionResult> {
   updatePayload.featured_image_credit = featuredImageCredit || null;
 
   const categorySlug = getTextValue(formData, "category_slug");
-  const customCategoryName = getTextValue(formData, "custom_category_name");
-  const customCategorySlug = getTextValue(formData, "custom_category_slug");
-  const resolvedCategorySlug =
-    categorySlug === "__new__" ? customCategorySlug : categorySlug;
-  if (resolvedCategorySlug) {
-    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(resolvedCategorySlug)) {
+  if (categorySlug) {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(categorySlug)) {
       return {
         success: false,
         message:
@@ -488,48 +443,17 @@ export async function updateArticle(formData: FormData): Promise<ActionResult> {
     const { data: catData } = await supabase
       .from("categories")
       .select("id")
-      .eq("slug", resolvedCategorySlug)
+      .eq("slug", categorySlug)
       .maybeSingle();
 
-    if (!catData?.id && categorySlug !== "__new__") {
+    if (!catData?.id) {
       return {
         success: false,
-        message: "चुनी हुई fixed category अभी Supabase में configured नहीं है।",
+        message: "चुनी हुई श्रेणी उपलब्ध नहीं है। पहले Categories में इसे जोड़ें।",
       };
     }
 
-    if (catData?.id) {
-      updatePayload.category_id = catData.id;
-    } else {
-      if (role !== "admin" || customCategoryName.length < 2) {
-        return { success: false, message: "नई श्रेणी का नाम भरें; इसे केवल admin जोड़ सकता है।" };
-      }
-      const CAT_NAMES: Record<string, string> = {
-        news: "ताज़ा खबरें और रिपोर्ट",
-        farming: "खेती-बाड़ी",
-        pashupalan: "पशुपालन",
-        kisan: "किसान",
-        wisdom: "बुजुर्गों की सीख",
-        history: "इतिहास और विरासत",
-        heritage: "सांस्कृतिक विरासत",
-        food: "खान-पान",
-      };
-      const { data: newCat } = await supabase
-        .from("categories")
-        .insert({
-          name: customCategoryName || CAT_NAMES[resolvedCategorySlug] || resolvedCategorySlug,
-          slug: resolvedCategorySlug,
-          description: customCategoryName || CAT_NAMES[resolvedCategorySlug] || resolvedCategorySlug,
-          sort_order: 1,
-          is_active: true,
-          show_on_home: true,
-        })
-        .select("id")
-        .maybeSingle();
-      if (newCat?.id) {
-        updatePayload.category_id = newCat.id;
-      }
-    }
+    updatePayload.category_id = catData.id;
   }
 
   const tagsRaw = getTextValue(formData, "tags");

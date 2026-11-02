@@ -36,6 +36,26 @@ function Header({
   categories?: NavigationCategory[];
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const isHomepage = pathname === "/";
+  const isCategoryPage =
+    pathname.startsWith("/categories/") ||
+    pathname.startsWith("/category/") ||
+    pathname === "/categories" ||
+    pathname === "/categories/";
+  const isCategoryActive = (slug: string) =>
+    pathname === `/categories/${slug}` ||
+    pathname.startsWith(`/categories/${slug}/`) ||
+    pathname === `/category/${slug}` ||
+    pathname.startsWith(`/category/${slug}/`);
+  const [hasScrolled, setHasScrolled] = useState(
+    !isHomepage && !isCategoryPage,
+  );
+  const usesHeroOverlay = (isHomepage || isCategoryPage) && !hasScrolled;
+  const usesBrownNavbar = (!isHomepage && !isCategoryPage) || hasScrolled;
+  // Keep the white navigation pill both over the home hero and after scrolling.
+  const usesWhitePillNav = usesBrownNavbar || usesHeroOverlay;
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -46,13 +66,43 @@ function Header({
     return () => window.removeEventListener("keydown", closeOnEscape);
   }, [menuOpen]);
 
+  useEffect(() => {
+    const updateHeader = () => {
+      const scrolled = isHomepage
+        ? window.scrollY > 720
+        : isCategoryPage
+          ? window.scrollY > 380
+          : true;
+      setHasScrolled(scrolled);
+      headerRef.current?.setAttribute("data-scrolled", String(scrolled));
+    };
+    updateHeader();
+    window.addEventListener("scroll", updateHeader, { passive: true });
+    document.addEventListener("scroll", updateHeader, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", updateHeader);
+      document.removeEventListener("scroll", updateHeader);
+    };
+  }, [isHomepage, isCategoryPage]);
+
   return (
     <>
-      <div className="bg-[#6b3915] px-4 py-2 text-center text-xs font-medium tracking-wide text-white sm:text-sm">
-        507 HEAD — अपनी मिट्टी, अपनी पहचान, अपनी कहानियाँ • छतरगढ़, बीकानेर
-      </div>
-      <header className="sticky top-0 z-40 border-b border-[#e5ddd3] bg-white backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-1.5 px-3 py-3 sm:gap-4 sm:px-6 sm:py-3.5">
+      <header
+        ref={headerRef}
+        data-scrolled={hasScrolled ? "true" : "false"}
+        data-brown-navbar={usesBrownNavbar ? "true" : "false"}
+        data-home-hero-overlay={usesHeroOverlay ? "true" : "false"}
+        className={`top-0 z-40 transition-[background-color,box-shadow,border-color] duration-300 ${
+          isHomepage || isCategoryPage ? "fixed inset-x-0" : "sticky"
+        } ${
+          usesHeroOverlay
+            ? "border-b border-transparent bg-transparent shadow-none"
+            : usesBrownNavbar
+              ? "border-b border-white/15 bg-[#542A19] shadow-lg shadow-[#2c1309]/25"
+              : "border-b border-[#e5ddd3] bg-white shadow-sm"
+        }`}
+      >
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-1.5 px-3 py-3 sm:gap-4 sm:px-6 sm:py-4">
           <Link
             href="/"
             prefetch
@@ -60,34 +110,75 @@ function Header({
           >
             <Image
               src="/images/507-head-logo-brown.png"
-              alt="507 हेड"
+              alt="507 हैड"
               width={96}
               height={96}
-                className="logo-handbook-tone h-12 w-12 shrink-0 rounded-xl bg-white object-cover shadow-sm sm:h-14 sm:w-14"
+                className="logo-handbook-tone h-12 w-12 shrink-0 rounded-2xl border border-white/70 bg-white object-cover shadow-lg sm:h-14 sm:w-14"
             />
             <span className="min-w-0 leading-tight">
-              <strong className="block text-lg font-black tracking-tight text-[#8a4b1f] sm:text-2xl">
-                507 हेड
+              <strong
+                className={`block text-lg font-black tracking-tight sm:text-2xl ${
+                  usesHeroOverlay || usesBrownNavbar
+                    ? "text-white drop-shadow-md"
+                    : "text-[#8a4b1f]"
+                }`}
+              >
+                507 हैड
               </strong>
-              <small className="hidden text-xs font-semibold text-[#8a4b1f] min-[390px]:block">
+              <small
+                className={`hidden text-xs font-semibold min-[390px]:block ${
+                  usesHeroOverlay || usesBrownNavbar
+                    ? "text-[#fff1d4]"
+                    : "text-[#8a4b1f]"
+                }`}
+              >
                 जल, प्रकृति और जनजीवन
               </small>
             </span>
           </Link>
-          <nav className="hidden items-center gap-5 text-sm font-semibold text-[#8a4b1f] xl:flex">
-            <Link href="/" prefetch className="font-bold text-[#8a4b1f]">
+          <nav
+            className={`desktop-header-nav hidden items-center text-sm font-semibold xl:flex ${
+              usesWhitePillNav
+                ? "navbar-white-pill rounded-full border border-white/70 bg-white/95 px-3 py-1.5 text-[#542A19] shadow-lg"
+                : usesBrownNavbar
+                  ? "gap-5 text-white"
+                  : "gap-5 text-[#8a4b1f]"
+            }`}
+          >
+            <Link
+              href="/"
+              prefetch
+              aria-current={isHomepage ? "page" : undefined}
+              className={`font-bold ${isHomepage ? "nav-active-link" : ""} ${
+                usesWhitePillNav
+                  ? "rounded-full px-3 py-1.5 text-[#542A19] hover:bg-[#f6ebe2]"
+                  : usesBrownNavbar
+                    ? "text-white hover:text-[#fff1d4]"
+                    : "text-[#8a4b1f]"
+              }`}
+            >
               होम
             </Link>
-            {categories.map(({ slug, name }) => (
-              <Link
-                key={slug}
-                href={`/category/${slug}`}
-                prefetch
-                className="transition-colors hover:text-[#8a4b1f]"
-              >
-                {name}
-              </Link>
-            ))}
+            {categories.map(({ slug, name }) => {
+              const isActive = isCategoryActive(slug);
+              return (
+                <Link
+                  key={slug}
+                  href={`/categories/${slug}`}
+                  prefetch
+                  aria-current={isActive ? "page" : undefined}
+                  className={`transition-colors ${isActive ? "nav-active-link" : ""} ${
+                    usesWhitePillNav
+                      ? "rounded-full px-3 py-1.5 text-[#542A19] hover:bg-[#f6ebe2]"
+                      : usesBrownNavbar
+                        ? "text-white hover:text-[#fff1d4]"
+                        : "hover:text-[#6b3915]"
+                  }`}
+                >
+                  {name}
+                </Link>
+              );
+            })}
           </nav>
           <div className="hidden shrink-0 items-center gap-3 xl:flex">
             {socials.map(([name, href, label]) => (
@@ -97,7 +188,13 @@ function Header({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="flex h-8 w-8 items-center justify-center rounded-full border border-[#8a4b1f] bg-white text-[#8a4b1f] transition duration-200 hover:-translate-y-0.5 hover:bg-[#f5f5f5] sm:h-10 sm:w-10"
+                className={`flex h-8 w-8 items-center justify-center rounded-full border transition duration-200 hover:-translate-y-0.5 sm:h-10 sm:w-10 ${
+                  usesWhitePillNav
+                    ? "border-white bg-white text-[#542A19] hover:bg-[#f5f5f5]"
+                    : usesBrownNavbar
+                      ? "border-white/80 bg-white text-[#542A19] hover:bg-[#f5f5f5]"
+                      : "border-[#8a4b1f] bg-white text-[#8a4b1f] hover:bg-[#f5f5f5]"
+                }`}
               >
                 <SocialIcon name={name} className="h-4 w-4 sm:h-5 sm:w-5" />
               </a>
@@ -109,7 +206,13 @@ function Header({
             aria-controls="mobile-site-menu"
             aria-label={menuOpen ? "मेनू बंद करें" : "मेनू खोलें"}
             onClick={() => setMenuOpen((isOpen) => !isOpen)}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-[#e5ddd3] text-[#6b3915] transition hover:bg-[#F7F4DE] focus:outline-none focus:ring-2 focus:ring-[#245d92] focus:ring-offset-2 xl:hidden"
+            className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border transition focus:outline-none focus:ring-2 focus:ring-[#245d92] focus:ring-offset-2 xl:hidden ${
+              usesWhitePillNav && !usesBrownNavbar
+                ? "border-white/80 bg-white/95 text-[#542A19] hover:bg-white"
+                : usesBrownNavbar
+                  ? "border-white/25 bg-white/10 text-white hover:bg-white/25"
+                  : "border-[#e5ddd3] text-[#6b3915] hover:bg-[#F7F4DE]"
+            }`}
           >
             {menuOpen ? "×" : "☰"}
           </button>
@@ -117,30 +220,43 @@ function Header({
         {menuOpen ? (
           <div
             id="mobile-site-menu"
-            className="border-t border-[#e5ddd3] bg-[#F7F4DE] px-4 py-4 shadow-lg xl:hidden"
+            className="max-h-[calc(100dvh-72px)] overflow-y-auto border-t border-[#eadfd8] bg-white px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-xl sm:px-4 sm:py-4 xl:hidden"
           >
             <nav aria-label="Mobile navigation" className="grid gap-1">
               <Link
                 href="/"
                 prefetch
                 onClick={() => setMenuOpen(false)}
-                className="rounded-lg px-4 py-3 text-sm font-bold text-[#8a4b1f] transition hover:bg-[#F7F6EE]"
+                aria-current={isHomepage ? "page" : undefined}
+                className={`rounded-lg px-4 py-3 text-sm transition text-[#542A19] ${
+                  isHomepage
+                    ? "active-mobile-link bg-[#f2e5df] font-bold text-[#542A19] shadow-sm"
+                    : "font-semibold text-[#542A19] hover:bg-[#f8f1ed]"
+                }`}
               >
                 होम
               </Link>
-              {categories.map(({ slug, name }) => (
-                <Link
-                  key={slug}
-                  href={`/category/${slug}`}
-                  prefetch
-                  onClick={() => setMenuOpen(false)}
-                  className="rounded-lg px-4 py-3 text-sm font-semibold text-[#8a4b1f] transition hover:bg-[#F7F6EE] hover:text-[#8a4b1f]"
-                >
-                  {name}
-                </Link>
-              ))}
+              {categories.map(({ slug, name }) => {
+                const isActive = isCategoryActive(slug);
+                return (
+                  <Link
+                    key={slug}
+                    href={`/categories/${slug}`}
+                    prefetch
+                    onClick={() => setMenuOpen(false)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={`rounded-lg px-4 py-3 text-sm transition text-[#542A19] ${
+                      isActive
+                        ? "active-mobile-link bg-[#f2e5df] font-bold text-[#542A19] shadow-sm"
+                        : "font-semibold text-[#542A19] hover:bg-[#f8f1ed]"
+                    }`}
+                  >
+                    {name}
+                  </Link>
+                );
+              })}
             </nav>
-            <div className="mt-4 flex gap-3 border-t border-[#e5ddd3] pt-4">
+            <div className="mt-4 flex gap-3 border-t border-[#eadfd8] pt-4">
               {socials.map(([name, href, label]) => (
                 <a
                   key={name}
@@ -148,7 +264,7 @@ function Header({
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[#8a4b1f] bg-white text-[#6b3915] transition hover:bg-[#8a4b1f] hover:text-white"
+                  className="mobile-social-icon flex h-11 w-11 items-center justify-center rounded-full border border-[#542A19]/30 bg-[#542A19] text-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-[#f4c978] hover:bg-[#f4c978] hover:text-[#542A19] focus-visible:outline-[#542A19]"
                 >
                   <SocialIcon name={name} className="h-5 w-5" />
                 </a>
@@ -170,7 +286,7 @@ function Header({
           {categories.map(({ slug, name }) => (
             <Link
               key={slug}
-              href={`/category/${slug}`}
+              href={`/categories/${slug}`}
               prefetch
               className="shrink-0 snap-start hover:text-[#8a4b1f]"
             >
@@ -189,20 +305,23 @@ function Footer({
   categories?: NavigationCategory[];
 }) {
   return (
-    <footer className="border-t border-[#e5ddd3] bg-white pb-8 pt-14 text-[#555]">
-      <div className="mx-auto grid max-w-7xl gap-10 border-b border-[#f0e7dd] px-4 pb-12 max-sm:grid-cols-2 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
-        <div className="col-span-2 space-y-4 sm:col-auto">
+    <footer
+      className="border-t border-[#e5c999] bg-[#fff8eb] bg-cover bg-bottom bg-no-repeat pb-0 pt-5 text-[#55331d]"
+      style={{ backgroundImage: "url('/images/footer-background.png')" }}
+    >
+      <div className="mx-auto grid max-w-5xl gap-8 px-4 pb-12 max-sm:grid-cols-2 sm:grid-cols-2 sm:px-6 lg:grid-cols-[1.45fr_0.95fr_0.95fr_1fr] lg:gap-4">
+        <div className="col-span-2 space-y-2 sm:col-auto">
           <Link href="/" className="flex items-center gap-3">
             <Image
               src="/images/507-head-logo-brown.png"
-              alt="507 हेड"
+              alt="507 हैड"
               width={96}
               height={96}
                 className="logo-handbook-tone h-12 w-12 rounded-lg bg-white object-cover"
             />
             <span className="leading-tight">
               <strong className="block text-xl font-black text-[#222]">
-                507 हेड
+                507 हैड
               </strong>
               <small className="text-xs text-[#777]">
                 जल, प्रकृति और जनजीवन
@@ -215,14 +334,14 @@ function Footer({
           </p>
         </div>
         <div>
-          <h4 className="mb-4 text-sm font-bold text-[#222]">
+          <h4 className="mb-4 text-sm font-bold text-[#552b12]">
             प्रमुख श्रेणियाँ
           </h4>
           <ul className="space-y-2 text-xs">
             {categories.map(({ slug, name }) => (
               <li key={slug}>
                 <Link
-                  href={`/category/${slug}`}
+                  href={`/categories/${slug}`}
                   className="hover:text-[#8a4b1f]"
                 >
                   {name}
@@ -232,7 +351,7 @@ function Footer({
           </ul>
         </div>
         <div>
-          <h4 className="mb-4 text-sm font-bold text-[#222]">507 Head लिंक</h4>
+          <h4 className="mb-4 text-sm font-bold text-[#552b12]">507 Head लिंक</h4>
           <ul className="space-y-2 text-xs">
             <li>
               <Link href="/about" className="hover:text-[#8a4b1f]">
@@ -257,8 +376,8 @@ function Footer({
           </ul>
         </div>
         <div className="col-span-2 sm:col-auto">
-          <h4 className="mb-4 text-sm font-bold text-[#222]">
-            507 हेड से जुड़े रहें
+          <h4 className="mb-4 text-sm font-bold text-[#552b12]">
+            507 हैड से जुड़े रहें
           </h4>
           <div className="flex items-center gap-3">
             {socials.map(([name, href, label]) => (
@@ -268,7 +387,7 @@ function Footer({
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="grid h-10 w-10 place-items-center rounded-full bg-[#8a4b1f] text-white transition hover:bg-[#6b3915]"
+                className="footer-social-icon grid h-11 w-11 place-items-center rounded-full border border-[#542A19] bg-[#542A19] text-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-[#f4c978] hover:bg-[#f4c978] hover:text-[#542A19] focus-visible:outline-[#542A19]"
               >
                 <SocialIcon name={name} className="h-5 w-5" />
               </a>
@@ -276,9 +395,8 @@ function Footer({
           </div>
         </div>
       </div>
-      <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 pt-6 text-xs text-[#777] sm:flex-row sm:px-6">
-        <p>© 2026 507 हेड। सर्वाधिकार सुरक्षित।</p>
-        <p>डिजिटल राजस्थान • ग्रामीण पत्रकारिता की नई दिशा</p>
+      <div className="relative top-1 mx-auto mt-4 flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-3 text-center font-[Mukta] text-[12px] leading-4 text-[#FFFFFF] drop-shadow-[0_1px_2px_rgba(67,20,8,0.9)] max-sm:-top-12 sm:h-14 sm:flex-row sm:gap-4 sm:p-[20px_24px] sm:text-left">
+        <p className="relative top-2 text-[#FFFFFF]">© 2026 507 हैड। सर्वाधिकार सुरक्षित।</p>
       </div>
     </footer>
   );

@@ -3,8 +3,9 @@ import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getCategories } from "@/lib/content";
-import { createCategory, syncApprovedCategories } from "./actions";
+import { syncApprovedCategories, updateCategory } from "./actions";
 import CategoryStatusNotice from "./CategoryStatusNotice";
+import CategoryCreateForm from "./CategoryCreateForm";
 
 export const instant = false;
 
@@ -56,7 +57,7 @@ export default async function AdminCategoriesPage({
               Category Management
             </h1>
             <p className="mt-2 text-gray-600 text-sm">
-              507 Head की 7 स्वीकृत एवं स्थायी श्रेणियां (Phase 1 Fixed Slugs).
+              507 Head की श्रेणियां — यहाँ से आप नई श्रेणी भी जोड़ सकते हैं।
             </p>
           </div>
           <form action={syncApprovedCategories}>
@@ -71,41 +72,12 @@ export default async function AdminCategoriesPage({
 
         <CategoryStatusNotice status={category_status} />
 
-        <section className="mb-8 hidden rounded-2xl border border-[#e8dac9] bg-[#F7F6EE] p-5 shadow-sm md:p-6">
+        <section className="mb-8 rounded-2xl border border-[#e8dac9] bg-[#F7F6EE] p-5 shadow-sm md:p-6">
           <h2 className="text-lg font-bold">नई श्रेणी जोड़ें</h2>
           <p className="mt-1 text-sm text-gray-600">
-            यह श्रेणी सीधे Supabase में save होगी और वेबसाइट पर दिखेगी।
+            यह श्रेणी सीधे Supabase में save होगी और वेबसाइट पर तुरंत दिखेगी।
           </p>
-          <form
-            action={createCategory}
-            className="mt-5 grid gap-3 md:grid-cols-2"
-          >
-            <input
-              name="name"
-              required
-              minLength={2}
-              placeholder="नाम, जैसे स्थानीय समाचार"
-              className="rounded-xl border border-[#e7ddd0] px-4 py-3"
-            />
-            <input
-              name="slug"
-              required
-              pattern="[a-z0-9]+(-[a-z0-9]+)*"
-              placeholder="अंग्रेज़ी स्लग, जैसे local-news"
-              className="rounded-xl border border-[#e7ddd0] px-4 py-3"
-            />
-            <input
-              name="description"
-              placeholder="छोटा विवरण (optional)"
-              className="rounded-xl border border-[#e7ddd0] px-4 py-3 md:col-span-2"
-            />
-            <button
-              type="submit"
-              className="w-fit rounded-xl bg-[#8a4b1f] px-5 py-3 text-sm font-bold text-white hover:bg-[#6b3915]"
-            >
-              श्रेणी जोड़ें
-            </button>
-          </form>
+          <CategoryCreateForm />
         </section>
 
         <div className="overflow-x-auto rounded-2xl border border-[#e8dac9] bg-[#F7F6EE] shadow-sm">
@@ -115,8 +87,9 @@ export default async function AdminCategoriesPage({
                 <th className="px-6 py-4">क्रम</th>
                 <th className="px-6 py-4">श्रेणी का नाम</th>
                 <th className="px-6 py-4">अंग्रेज़ी स्लग</th>
-                <th className="px-6 py-4">विवरण</th>
+                <th className="px-6 py-4">Subtitle</th>
                 <th className="px-6 py-4">स्थिति</th>
+                <th className="px-6 py-4">संपादन</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#f0e7dd]">
@@ -125,7 +98,7 @@ export default async function AdminCategoriesPage({
                   <td className="px-6 py-4 font-mono text-xs">{index + 1}</td>
                   <td className="px-6 py-4 font-bold text-[#222]">
                     <Link
-                      href={`/category/${cat.slug}`}
+                      href={`/categories/${cat.slug}`}
                       target="_blank"
                       className="hover:text-[#8a4b1f]"
                     >
@@ -142,6 +115,27 @@ export default async function AdminCategoriesPage({
                     <span className="inline-flex rounded-full bg-green-100 px-2.5 py-1 text-xs font-semibold text-green-800">
                       सक्रिय
                     </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <details className="group min-w-72">
+                      <summary className="cursor-pointer font-semibold text-[#8a4b1f] hover:underline">
+                        संपादित करें
+                      </summary>
+                      <form action={updateCategory} className="mt-3 grid gap-2 rounded-xl border border-[#e8dac9] bg-white p-3">
+                        <input type="hidden" name="id" value={cat.id} />
+                        <label className="grid gap-1 text-xs font-semibold text-[#542a19]">
+                          श्रेणी का नाम
+                          <input name="name" required minLength={2} defaultValue={cat.name} className="rounded-lg border border-[#e7ddd0] px-3 py-2 font-normal text-[#222]" />
+                        </label>
+                        <label className="grid gap-1 text-xs font-semibold text-[#542a19]">
+                          Subtitle
+                          <textarea name="description" defaultValue={cat.description} rows={3} className="resize-y rounded-lg border border-[#e7ddd0] px-3 py-2 font-normal text-[#222]" />
+                        </label>
+                        <button type="submit" className="w-fit rounded-lg bg-[#8a4b1f] px-3 py-2 text-xs font-bold text-white hover:bg-[#6b3915]">
+                          बदलाव सहेजें
+                        </button>
+                      </form>
+                    </details>
                   </td>
                 </tr>
               ))}

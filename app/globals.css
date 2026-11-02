@@ -52,6 +52,12 @@ a:hover {
   color: var(--brand);
 }
 
+/* Tailwind hover:text-white utilities are in a CSS layer; keep their intended
+   contrast when a darker CTA background is applied on hover. */
+:is(a, button)[class*="hover:text-white"]:hover {
+  color: #fff !important;
+}
+
 a:focus-visible,
 button:focus-visible {
   outline: 3px solid var(--focus);
@@ -1240,6 +1246,714 @@ button {
   color: #8a4b1f !important;
 }
 
+.history-heritage-hero {
+  background-color: #fffdf9;
+  background-image: url("/images/history-heritage-background-v2.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.history-heritage-copy {
+  text-shadow: 0 1px 14px rgba(255, 253, 249, 0.95);
+}
+
+.history-heritage-artwork img {
+  mix-blend-mode: multiply;
+}
+
+.history-page {
+  background-color: #fffaf1;
+  background-image:
+    linear-gradient(rgba(255, 250, 241, 0.38), rgba(255, 250, 241, 0.38)),
+    url("/images/history-articles-background.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: auto, 100% 100%;
+}
+
+.history-articles-section {
+  margin-top: 2rem;
+  margin-bottom: 4rem;
+}
+
+.history-other-topics {
+  position: relative;
+  overflow: hidden;
+  background: #453f29;
+  color: #ffffff;
+}
+
+.history-other-topics h2 {
+  color: #ffffff !important;
+}
+
+.history-other-topics p {
+  color: rgba(255, 255, 255, 0.84) !important;
+}
+
+.history-other-topics a {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.52) !important;
+}
+
+.public-site-shell .history-other-topics .text-\[\#8a4b1f\] {
+  color: #ffffff !important;
+}
+
+.public-site-shell .history-other-topics .text-\[\#8a4b1f\]:hover,
+.public-site-shell .history-other-topics .text-\[\#8a4b1f\]:focus-visible,
+.public-site-shell .history-other-topics .text-\[\#8a4b1f\]:active {
+  color: #453f29 !important;
+}
+
+.history-other-topics a:hover,
+.history-other-topics a:focus-visible,
+.history-other-topics a:active {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #453f29 !important;
+}
+
+.farming-category-page {
+  background-color: #fff8eb;
+}
+
+.public-site-shell .farming-category-hero {
+  background-color: transparent !important;
+  border-bottom-color: transparent !important;
+}
+
+/* Only the category-navigation pill changes on category pages. */
+body:has(.category-pattern-hero) .public-site-shell > header > div > nav.desktop-header-nav {
+  border-color: rgb(84 42 25 / 0.3) !important;
+  background: #ffffff !important;
+  color: #542a19 !important;
+}
+
+/* On category pages, transparent when at top; turns brown on scroll */
+body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled="true"]) {
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* A solid header keeps the white logo and close button readable while the
+   mobile navigation is expanded over a category hero. */
+body:has(.category-pattern-hero) .public-site-shell > header:has(#mobile-site-menu) {
+  background-color: #542a19 !important;
+  border-bottom-color: rgb(255 255 255 / 0.16) !important;
+  box-shadow: 0 8px 20px rgb(45 20 10 / 0.22) !important;
+}
+
+body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled="true"]) > div > nav.desktop-header-nav a {
+  color: #542a19 !important;
+}
+
+body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled="true"]) > div > nav.desktop-header-nav a:hover {
+  background: rgb(84 42 25 / 0.1) !important;
+  color: #542a19 !important;
+}
+
+body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled="true"]) > div > nav.desktop-header-nav a.bg-white\/25 {
+  background: #542a19 !important;
+  color: #ffffff !important;
+}
+
+body:has(.category-pattern-hero) .public-site-shell > header[data-scrolled="true"] {
+  background-color: rgba(75, 32, 15, 0.95) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 10px 25px -5px rgba(44, 19, 9, 0.4) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+body:has(.category-pattern-hero) .public-site-shell > header[data-scrolled="true"] > div > nav {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+body:has(.category-pattern-hero) .public-site-shell > header[data-scrolled="true"] > div > nav a {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+body:has(.category-pattern-hero) .public-site-shell > header[data-scrolled="true"] > div > nav a:hover {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #ffffff !important;
+}
+
+body:has(.category-pattern-hero) .public-site-shell > header[data-scrolled="true"] > div > nav a.bg-white\/25 {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+/* Category indexes turn brown only after their hero has scrolled away. */
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header[data-brown-navbar="true"] {
+  background: #542a19 !important;
+  border-color: rgb(255 255 255 / 0.15) !important;
+  box-shadow: 0 10px 25px -5px rgb(44 19 9 / 0.4) !important;
+}
+
+body:has(.category-pattern-hero) .public-site-shell > header > div > nav.desktop-header-nav {
+  border-color: rgb(255 255 255 / 0.7) !important;
+  background: #ffffff !important;
+  color: #542a19 !important;
+  box-shadow: 0 8px 18px rgb(44 19 9 / 0.16) !important;
+}
+
+body:has(.category-pattern-hero) .public-site-shell > header > div > nav.desktop-header-nav a,
+body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled="true"]) > div > nav.desktop-header-nav a {
+  color: #542a19 !important;
+  background: transparent !important;
+}
+
+
+/* Dark orange folk-art banner for every category header. */
+.public-site-shell .category-pattern-hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 420px;
+  margin-top: 0;
+  padding-top: 125px !important;
+  padding-bottom: 90px !important;
+  color: #fffdf8;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.public-site-shell .category-pattern-hero::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background: url("/images/category-hero-brown.png") center bottom / 100% 100% no-repeat;
+}
+
+/* Keep the banner's top edge straight while carrying the folk-art wave at its bottom edge. */
+.public-site-shell .category-pattern-hero::after {
+  content: none;
+}
+
+.public-site-shell .category-pattern-hero > div {
+  position: relative;
+  z-index: 1;
+}
+
+.public-site-shell .category-pattern-hero .text-\[\#8a4b1f\],
+.public-site-shell .category-pattern-hero .text-\[\#8a4b1f\]:hover,
+.public-site-shell .category-pattern-hero .text-\[\#222\],
+.public-site-shell .category-pattern-hero .text-\[\#666\] {
+  color: #fffdf8 !important;
+  text-shadow: 0 2px 6px rgb(75 28 5 / 0.42);
+}
+
+.public-site-shell .category-pattern-hero .bg-\[\#8a4b1f\]\/10 {
+  color: #7a330d !important;
+  text-shadow: none;
+  background-color: rgb(255 247 221 / 0.94) !important;
+}
+
+@media (max-width: 1024px) {
+  .public-site-shell .category-pattern-hero {
+    min-height: 350px;
+    margin-top: 0;
+    padding-top: 105px !important;
+    padding-bottom: 70px !important;
+  }
+
+  body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled="true"]) button[aria-controls="mobile-site-menu"] {
+    background: rgb(255 255 255 / 0.86) !important;
+    border-color: rgb(84 42 25 / 0.3) !important;
+    color: #542a19 !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .public-site-shell .category-pattern-hero {
+    min-height: 310px;
+    margin-top: 0;
+    padding-top: 90px !important;
+    padding-bottom: 60px !important;
+  }
+
+  /* Show fewer, wider wave crests at the bottom so they do not feel crowded
+     on narrow screens, while retaining the original banner artwork. */
+  .public-site-shell .category-pattern-hero::before {
+    background-size: 145% 100%;
+  }
+
+  .public-site-shell .category-pattern-hero h1 {
+    font-size: 1.85rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .public-site-shell .category-pattern-hero p {
+    font-size: 0.95rem !important;
+    line-height: 1.5 !important;
+    margin-top: 0.5rem !important;
+  }
+}
+
+
+@media (max-width: 640px) {
+  .farming-category-page {
+    background-attachment: scroll;
+  }
+
+}
+
+.history-other-topics > div {
+  position: relative;
+  z-index: 1;
+}
+
+.history-other-topics::before,
+.history-other-topics::after {
+  content: none;
+  display: none;
+}
+
+
+
+@media (max-width: 1023px) {
+  .history-heritage-hero {
+    background-position: center top;
+  }
+
+  .history-page {
+    background-size: auto, cover;
+  }
+}
+
+@media (max-width: 640px) {
+  .history-page {
+    background-size: auto, cover;
+  }
+
+  .history-articles-section {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+  }
+
+}
+
+/* Home-page body frame: this sits in the empty space beside the news content. */
+body:has(.public-page) {
+  background: #fcf9f5;
+}
+
+body:has(.public-page) .public-page {
+  background-color: #fcf9f5 !important;
+}
+
+/* Latest news is framed by a light Rajasthan-inspired editorial background. */
+.latest-news-section {
+  border-block: 1px solid #d9c5a9;
+  background-image:
+    linear-gradient(rgba(255, 250, 241, 0.88), rgba(255, 250, 241, 0.9)),
+    url("/images/rajasthan-hero-v2.png");
+  background-position: center, center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* A carved, jewel-like divider gives the latest-news heading a clear editorial focal point. */
+.latest-news-heading {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.latest-news-heading h2 {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.latest-news-heading__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.latest-news-heading__content::before,
+.latest-news-heading__content::after {
+  width: 185px;
+  height: 100px;
+  flex: 0 0 185px;
+  content: "";
+  background-image: url("/images/latest-news-rajasthan-border.png");
+  background-repeat: no-repeat;
+  background-size: auto 136px;
+  opacity: 0.86;
+}
+
+.latest-news-heading__content::before {
+  margin-right: clamp(12px, 2vw, 28px);
+  background-position: left center;
+}
+
+.latest-news-heading__content::after {
+  margin-left: clamp(12px, 2vw, 28px);
+  background-position: right center;
+}
+
+.latest-news-heading__title {
+  display: inline-block;
+}
+
+.latest-news-divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-top: 15px;
+}
+
+.latest-news-divider span {
+  display: block;
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, #d8b47a 42%, #8a4b1f);
+}
+
+.latest-news-divider span:last-child {
+  background: linear-gradient(90deg, #8a4b1f, #d8b47a 58%, transparent);
+}
+
+.latest-news-divider b {
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  flex: 0 0 auto;
+  color: #8a4b1f;
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* Heritage category heading: archival images and mandana-style divider on the homepage. */
+.home-history-heading {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  border-bottom: 0;
+  /* override Tailwind mb-6 pb-3 — keep it tight */
+  margin-bottom: 12px !important;
+  padding-bottom: 0 !important;
+  row-gap: 2px;
+  margin-top: -36px !important;
+}
+
+.home-history-heading > div:first-child {
+  grid-column: 2;
+}
+
+.home-history-heading > a {
+  grid-column: 3;
+  justify-self: end;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.home-history-heading > a:hover {
+  /* Keep CTA labels legible instead of inheriting the global link hover color. */
+  color: #fff !important;
+  box-shadow: 0 5px 12px rgba(72, 36, 18, 0.22);
+  transform: translateY(-1px);
+}
+
+.home-history-heading__image {
+  width: 260px;
+  height: 145px;
+  flex: 0 0 260px;
+  object-fit: contain;
+  object-position: center;
+  mix-blend-mode: multiply;
+  opacity: 0.9;
+  display: block;
+  align-self: center;
+}
+
+.home-history-heading__image--farming {
+  width: 170px;
+  height: 95px;
+  flex: 0 0 170px;
+}
+
+/* Tighten gap between ornament and heading text */
+.home-history-heading > div:first-child {
+  gap: 0px !important;
+}
+
+/* Pull images into the text with negative margins */
+.home-history-heading > div:first-child img:first-child {
+  margin-right: -18px;
+}
+.home-history-heading > div:first-child img:last-child {
+  margin-left: -18px;
+}
+
+.home-history-heading__divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  grid-column: 1 / -1;
+  flex-basis: 100%;
+  margin-top: -6px;
+  margin-bottom: 20px;
+}
+
+.home-history-heading__divider > span {
+  height: 2px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, #d8ae72 42%, #8a4b1f);
+}
+
+.home-history-heading__divider > span:last-child {
+  background: linear-gradient(90deg, #8a4b1f, #d8ae72 58%, transparent);
+}
+
+.home-history-heading__divider i {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  color: #8a4b1f;
+  font-size: 18px;
+  font-style: normal;
+  line-height: 1;
+}
+
+.home-history-heading__divider i::before,
+.home-history-heading__divider i::after {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .home-history-heading {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0 !important;
+    gap: 8px;
+  }
+
+  .home-history-heading > div:first-child {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  .home-history-heading > a {
+    align-self: center;
+    margin-top: 2px;
+    margin-bottom: 6px;
+  }
+
+  .home-history-heading__image {
+    width: 145px;
+    height: 82px;
+    flex: 0 0 145px;
+  }
+
+  .home-history-heading__image--farming {
+    width: 110px;
+    height: 62px;
+    flex: 0 0 110px;
+  }
+
+  .home-history-heading > div:first-child img:first-child {
+    margin-right: -10px;
+  }
+  .home-history-heading > div:first-child img:last-child {
+    margin-left: -10px;
+  }
+
+  .home-history-heading__divider {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .latest-news-section {
+    background-position: center, 58% center;
+  }
+
+  .latest-news-divider {
+    margin-top: 12px;
+  }
+
+  .latest-news-heading__content {
+    min-height: 72px;
+  }
+
+  .latest-news-heading__content::before,
+  .latest-news-heading__content::after {
+    display: none;
+  }
+
+  .home-history-heading {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0 !important;
+    margin-bottom: 12px !important;
+    gap: 4px;
+  }
+
+  .home-history-heading > div:first-child {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  .home-history-heading > div:first-child h3 {
+    font-size: 1.15rem !important;
+    line-height: 1.25 !important;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  .home-history-heading__image {
+    width: 76px !important;
+    height: 44px !important;
+    flex: 0 0 76px !important;
+    display: block !important;
+  }
+
+  .home-history-heading__image--farming {
+    width: 62px !important;
+    height: 36px !important;
+    flex: 0 0 62px !important;
+    display: block !important;
+  }
+
+  .home-history-heading > div:first-child img:first-child {
+    margin-right: -6px !important;
+  }
+  .home-history-heading > div:first-child img:last-child {
+    margin-left: -6px !important;
+  }
+
+  .home-history-heading > a {
+    font-size: 11px !important;
+    padding: 3px 10px !important;
+    margin-top: 2px !important;
+    align-self: center;
+  }
+
+  .home-history-heading__divider {
+    margin-top: 4px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .home-history-heading__divider i {
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+  }
+}
+
+/* A light-brown surface keeps the reels section aligned with the site palette. */
+.reels-showcase-section {
+  position: relative;
+  overflow: hidden;
+  border-color: #e4cba9 !important;
+  background-color: #f7eee1;
+  background-image:
+    radial-gradient(circle at 92% 15%, rgb(255 255 255 / 0.82), transparent 27rem),
+    radial-gradient(circle at 8% 78%, rgb(247 214 168 / 0.52), transparent 26rem),
+    linear-gradient(135deg, #fffaf2 0%, #f9eddc 48%, #f4e2c7 100%);
+}
+
+.reels-showcase-section__inner {
+  position: relative;
+}
+
+/* The active route has a persistent line beneath it in desktop navigation. */
+.desktop-header-nav .nav-active-link,
+.desktop-header-nav .nav-active-link:hover,
+.desktop-header-nav .nav-active-link:focus-visible {
+  position: relative;
+  color: #542a19 !important;
+}
+
+.desktop-header-nav .nav-active-link::after {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.25rem;
+  left: 0.75rem;
+  height: 2px;
+  border-radius: 9999px;
+  background: #8a4b1f;
+  content: "";
+}
+
+/* The site-wide link hover rule must not darken text inside a brown header. */
+.public-site-shell > header[data-brown-navbar="true"] .desktop-header-nav:not(.navbar-white-pill) a:hover,
+.public-site-shell > header[data-brown-navbar="true"] .desktop-header-nav:not(.navbar-white-pill) a:focus-visible {
+  color: #ffffff !important;
+}
+
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header[data-brown-navbar="true"]
+  .desktop-header-nav:not(.navbar-white-pill)
+  a:hover,
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header[data-brown-navbar="true"]
+  .desktop-header-nav:not(.navbar-white-pill)
+  a:focus-visible {
+  color: #ffffff !important;
+}
+
+/* The centred white navigation keeps brown text and a soft selected surface. */
+.desktop-header-nav.navbar-white-pill a:hover,
+.desktop-header-nav.navbar-white-pill a:focus-visible {
+  background-color: #f1e9e4 !important;
+  color: #542a19 !important;
+}
+
+body:has(.category-pattern-hero)
+  .desktop-header-nav.navbar-white-pill
+  a:hover,
+body:has(.category-pattern-hero)
+  .desktop-header-nav.navbar-white-pill
+  a:focus-visible {
+  background-color: #f1e9e4 !important;
+  color: #542a19 !important;
+}
+
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header[data-brown-navbar="true"]
+  > div
+  > nav.desktop-header-nav.navbar-white-pill
+  a:hover,
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header[data-brown-navbar="true"]
+  > div
+  > nav.desktop-header-nav.navbar-white-pill
+  a:focus-visible {
+  background-color: #f1e9e4 !important;
+  color: #542a19 !important;
+}
+
 .homepage {
   width: 100%;
   overflow: hidden;
@@ -2119,5 +2833,74 @@ button {
   .homepage .category-grid,
   .homepage .gallery-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile navigation stays readable and scrollable on compact screens. */
+#mobile-site-menu {
+  background-color: #ffffff !important;
+}
+
+#mobile-site-menu > nav a {
+  color: #542a19 !important;
+  font-weight: 600 !important;
+}
+
+#mobile-site-menu > nav a:hover {
+  color: #542a19 !important;
+  background-color: #f8f1ed !important;
+}
+
+#mobile-site-menu > nav a.active-mobile-link {
+  position: relative;
+  color: #542a19 !important;
+  background-color: #f2e5df !important;
+  font-weight: 700 !important;
+}
+
+#mobile-site-menu > nav a.active-mobile-link::after {
+  position: absolute;
+  right: 1rem;
+  bottom: 0.35rem;
+  left: 1rem;
+  height: 2px;
+  border-radius: 9999px;
+  background: #8a4b1f;
+  content: "";
+}
+
+/* Keep the social glyphs high-contrast; utility colors can otherwise lose to
+   the site's global link rules on small-screen navigation. */
+#mobile-site-menu .mobile-social-icon {
+  color: #ffffff !important;
+}
+
+#mobile-site-menu .mobile-social-icon:hover,
+#mobile-site-menu .mobile-social-icon:focus-visible {
+  color: #542a19 !important;
+}
+
+/* Footer social icons need explicit colors because the site-wide link hover
+   rule otherwise wins over their utility classes. */
+.public-site-shell footer .footer-social-icon {
+  color: #ffffff !important;
+  background-color: #542a19 !important;
+  border-color: #542a19 !important;
+}
+
+.public-site-shell footer .footer-social-icon:hover,
+.public-site-shell footer .footer-social-icon:focus-visible {
+  color: #542a19 !important;
+  background-color: #f4c978 !important;
+  border-color: #f4c978 !important;
+}
+
+@media (max-width: 390px) {
+  #mobile-site-menu {
+    padding-inline: 12px !important;
+  }
+
+  #mobile-site-menu > nav a {
+    padding-block: 10px !important;
   }
 }

@@ -12,6 +12,10 @@ const messages = {
     text: "इस स्लग वाली श्रेणी पहले से थी, उसे Supabase में अपडेट और सक्रिय कर दिया गया है।",
     className: "bg-blue-50 text-blue-800",
   },
+  edited: {
+    text: "श्रेणी का नाम और subtitle अपडेट कर दिया गया है।",
+    className: "bg-green-50 text-green-800",
+  },
   invalid: {
     text: "नाम और अंग्रेज़ी स्लग सही भरें, जैसे: local-news.",
     className: "bg-red-50 text-red-800",

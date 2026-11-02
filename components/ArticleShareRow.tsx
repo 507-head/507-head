@@ -12,7 +12,7 @@ export default function ArticleShareRow({ title, url }: ArticleShareRowProps) {
 
   return (
     <div
-      className="flex flex-wrap items-center gap-2.5 border-y border-[#e5ddd3] py-6"
+      className="flex flex-wrap items-center gap-2.5 border-y border-[#e5ddd3] py-5"
       aria-label="लेख साझा करें"
     >
       <span className="mr-1 text-xs font-bold text-[#888]">शेयर करें:</span>

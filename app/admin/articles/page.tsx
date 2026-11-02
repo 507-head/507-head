@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { INITIAL_ARTICLES } from "@/lib/content";
+import { getCategories, INITIAL_ARTICLES } from "@/lib/content";
 import ArticleManager from "./ArticleManager";
 
 // This page reads the authenticated Supabase session for every request.
@@ -35,6 +35,7 @@ export default async function ArticlesPage() {
     .from("articles")
     .select("*, categories(id, name, slug)")
     .order("created_at", { ascending: false });
+  const categories = await getCategories();
 
   const CAT_LOOKUP: Record<string, { slug: string; name: string }> = {
     news: { slug: "news", name: "ताज़ा खबरें और रिपोर्ट" },
@@ -123,7 +124,7 @@ export default async function ArticlesPage() {
           </section>
         ) : (
           <section className="mt-8">
-            <ArticleManager articles={articlesList} />
+            <ArticleManager articles={articlesList} categories={categories} />
           </section>
         )}
       </div>
