@@ -2066,6 +2066,16 @@ body:has(.public-page) .public-page {
     display: block !important;
   }
 
+  /* Fill the mobile icon box instead of shrinking the PNG's transparent canvas. */
+  img.home-history-heading__image {
+    width: 76px !important;
+    height: 44px !important;
+    flex: 0 0 76px !important;
+    object-fit: cover;
+    mix-blend-mode: normal;
+    opacity: 1;
+  }
+
   .home-history-heading > div:first-child img:first-child {
     margin-right: -6px !important;
   }
