@@ -746,7 +746,7 @@ export default async function Home() {
         return (
           <section
             key={cat.slug}
-            className={`w-full py-8 sm:py-14 border-b transition-colors duration-200 ${cat.slug === "history" ? "homepage-history-section" : ""} ${sectionIndex % 2 === 0 ? "scroll-reveal-from-right" : ""} ${theme.sectionBg} ${theme.borderColor}`}
+            className={`homepage-category-section w-full border-b transition-colors duration-200 ${sectionIndex % 2 === 0 ? "scroll-reveal-from-right" : ""} ${theme.sectionBg} ${theme.borderColor}`}
           >
             <div className="mx-auto max-w-7xl px-4 sm:px-6">
               <div
