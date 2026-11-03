@@ -41,18 +41,18 @@ select slug from public.categories where is_active = true order by sort_order;
 
 Copy `.env.example` and fill only the providers you use.
 
-| Variable                               | Purpose                                                     |
-| -------------------------------------- | ----------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`                 | Canonical public site URL.                                  |
-| `NEXT_PUBLIC_SUPABASE_URL`             | Supabase project URL.                                       |
-| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Browser-safe Supabase key.                                  |
-| `SUPABASE_SERVICE_ROLE_KEY`            | Server-only key for scheduled publishing.                   |
-| `CRON_SECRET`                          | Bearer secret required by the scheduled-publish endpoint.   |
-| `CLOUDINARY_*`                         | Server-only Cloudinary media credentials.                   |
-| `RESEND_API_KEY`                       | Server-only Resend key for transactional contact email.     |
-| `RESEND_FROM_EMAIL`                    | Verified Resend sender, e.g. `507 Head <news@example.com>`. |
-| `CONTACT_NOTIFICATION_EMAIL`           | Inbox that receives new contact-form notifications.         |
-| `INSTAGRAM_*`                          | Optional Instagram reel integration.                        |
+| Variable                               | Purpose                                                                                                                                                 |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`                 | Canonical public site URL.                                                                                                                              |
+| `NEXT_PUBLIC_SUPABASE_URL`             | Supabase project URL.                                                                                                                                   |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Browser-safe Supabase key.                                                                                                                              |
+| `SUPABASE_SERVICE_ROLE_KEY`            | Server-only key for scheduled publishing.                                                                                                               |
+| `CRON_SECRET`                          | Bearer secret required by the scheduled-publish endpoint.                                                                                               |
+| `CLOUDINARY_URL`                       | Server-only Cloudinary API environment variable. Alternatively set `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, and `CLOUDINARY_API_SECRET` together. |
+| `RESEND_API_KEY`                       | Server-only Resend key for transactional contact email.                                                                                                 |
+| `RESEND_FROM_EMAIL`                    | Verified Resend sender, e.g. `507 Head <news@example.com>`.                                                                                             |
+| `CONTACT_NOTIFICATION_EMAIL`           | Inbox that receives new contact-form notifications.                                                                                                     |
+| `INSTAGRAM_*`                          | Optional Instagram reel integration.                                                                                                                    |
 
 `RESEND_FROM_EMAIL` requires a domain verified in Resend. Without the three Resend variables, contact messages remain safely stored in Supabase but no email is delivered.
 

@@ -2,11 +2,20 @@ import "server-only";
 
 import { v2 as cloudinary } from "cloudinary";
 
-const cloudinaryUrl = process.env.CLOUDINARY_URL;
-
-if (cloudinaryUrl) {
-  cloudinary.config({ cloudinary_url: cloudinaryUrl, secure: true });
-}
+// The SDK reads CLOUDINARY_URL automatically. Also support separate server-side
+// variables, which can be configured individually in Vercel.
+cloudinary.config({
+  secure: true,
+  ...(process.env.CLOUDINARY_CLOUD_NAME && {
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  }),
+  ...(process.env.CLOUDINARY_API_KEY && {
+    api_key: process.env.CLOUDINARY_API_KEY,
+  }),
+  ...(process.env.CLOUDINARY_API_SECRET && {
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  }),
+});
 
 export const CLOUDINARY_MEDIA_FOLDER = "507head/media";
 
@@ -15,7 +24,7 @@ export function getCloudinaryConfig() {
 
   if (!config.cloud_name || !config.api_key || !config.api_secret) {
     throw new Error(
-      "Cloudinary credentials are missing. Add CLOUDINARY_URL to .env.local.",
+      "Cloudinary credentials are missing. Set CLOUDINARY_URL or CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET in the server environment.",
     );
   }
 
