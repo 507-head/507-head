@@ -1946,6 +1946,10 @@ body:has(.public-page) .public-page {
 }
 
 @media (max-width: 1024px) {
+  .homepage-history-section {
+    padding-top: 24px;
+  }
+
   .home-history-heading {
     display: flex !important;
     flex-direction: column;
@@ -1992,6 +1996,10 @@ body:has(.public-page) .public-page {
 }
 
 @media (max-width: 640px) {
+  .homepage-history-section {
+    padding-top: 12px;
+  }
+
   .latest-news-section {
     background-position:
       center,
