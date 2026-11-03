@@ -3,10 +3,10 @@
 :root {
   --brand: #8a4b1f;
   --brand-dark: #6b3915;
-  --sand: #F7F4DE;
+  --sand: #f7f4de;
   --text: #222222;
   --muted: #666666;
-  --surface: #F7F6EE;
+  --surface: #f7f6ee;
   --border: #e5ddd3;
   --focus: #245d92;
   --container: 1140px;
@@ -134,7 +134,7 @@ button {
 }
 
 .site-header {
-  background: #F7F6EE;
+  background: #f7f6ee;
   border-bottom: 1px solid var(--border);
 }
 
@@ -489,7 +489,7 @@ button {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  background: #F7F6EE;
+  background: #f7f6ee;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
@@ -580,7 +580,7 @@ button {
 .follow-secondary {
   border: 1px solid var(--brand);
   color: var(--brand-dark);
-  background: #F7F6EE;
+  background: #f7f6ee;
 }
 
 .outline-link:hover,
@@ -600,7 +600,7 @@ button {
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: #F7F6EE;
+  background: #f7f6ee;
 }
 
 .reel-image {
@@ -662,7 +662,7 @@ button {
   padding: 23px;
   border: 1px solid var(--border);
   border-radius: 14px;
-  background: #F7F6EE;
+  background: #f7f6ee;
 }
 
 .category-heading {
@@ -731,7 +731,7 @@ button {
 
 .follow-actions .primary-link {
   color: var(--brand-dark);
-  background: #F7F6EE;
+  background: #f7f6ee;
   border-color: #fff;
 }
 
@@ -749,7 +749,7 @@ button {
 
 .follow-actions .follow-secondary:hover {
   color: var(--brand-dark);
-  background: #F7F6EE;
+  background: #f7f6ee;
 }
 
 .gallery-grid {
@@ -763,7 +763,7 @@ button {
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: #F7F6EE;
+  background: #f7f6ee;
 }
 
 .gallery-image {
@@ -1201,6 +1201,62 @@ button {
   }
 }
 
+.homepage-about-section {
+  background-color: #e8d5bc;
+}
+
+@media (min-width: 1024px) {
+  .about-page-hero {
+    display: grid;
+    align-items: center;
+    min-height: clamp(480px, 36vw, 680px);
+  }
+}
+
+.about-page-hero::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  aspect-ratio: 1376 / 768;
+  max-width: 100%;
+  pointer-events: none;
+  background-image: url("/images/about-fort-bg.jpg");
+  background-size: contain;
+  background-position: right center;
+  background-repeat: no-repeat;
+  mask-image: linear-gradient(to right, transparent, #000 45%);
+}
+
+@media (max-width: 1023px) {
+  .about-page-hero::before {
+    display: none;
+  }
+}
+
+.homepage-about-overlay {
+  background-image: linear-gradient(
+    to right,
+    #e8d5bc,
+    rgba(232, 213, 188, 0.85) 40%,
+    transparent 75%
+  );
+}
+
+.homepage-about-background {
+  inset: 0;
+  background-size: cover;
+  background-position: right center;
+  background-attachment: scroll;
+}
+
+@media (max-width: 1023px) {
+  .homepage-about-background,
+  .homepage-about-overlay {
+    display: none;
+  }
+}
+
 /* Accessibility: muted text and brand-action labels must meet WCAG AA contrast. */
 .text-\[\#777\],
 .text-\[\#888\] {
@@ -1215,7 +1271,7 @@ button {
 .public-site-shell {
   --brand: #8a4b1f;
   --brand-dark: #6b3915;
-  --sand: #F7F4DE;
+  --sand: #f7f4de;
   --border: #e5ddd3;
 }
 
@@ -1229,7 +1285,7 @@ button {
 
 .public-site-shell .bg-\[\#F7F4DE\],
 .public-site-shell .bg-\[\#fcf9f5\] {
-  background-color: #F7F4DE !important;
+  background-color: #f7f4de !important;
 }
 
 .public-site-shell .text-\[\#8a4b1f\] {
@@ -1269,7 +1325,9 @@ button {
     url("/images/history-articles-background.png");
   background-position: center;
   background-repeat: no-repeat;
-  background-size: auto, 100% 100%;
+  background-size:
+    auto,
+    100% 100%;
 }
 
 .history-articles-section {
@@ -1325,14 +1383,20 @@ button {
 }
 
 /* Only the category-navigation pill changes on category pages. */
-body:has(.category-pattern-hero) .public-site-shell > header > div > nav.desktop-header-nav {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header
+  > div
+  > nav.desktop-header-nav {
   border-color: rgb(84 42 25 / 0.3) !important;
   background: #ffffff !important;
   color: #542a19 !important;
 }
 
 /* On category pages, transparent when at top; turns brown on scroll */
-body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled="true"]) {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header:not([data-scrolled="true"]) {
   background-color: transparent !important;
   background-image: none !important;
   border-color: transparent !important;
@@ -1343,27 +1407,46 @@ body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled=
 
 /* A solid header keeps the white logo and close button readable while the
    mobile navigation is expanded over a category hero. */
-body:has(.category-pattern-hero) .public-site-shell > header:has(#mobile-site-menu) {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header:has(#mobile-site-menu) {
   background-color: #542a19 !important;
   border-bottom-color: rgb(255 255 255 / 0.16) !important;
   box-shadow: 0 8px 20px rgb(45 20 10 / 0.22) !important;
 }
 
-body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled="true"]) > div > nav.desktop-header-nav a {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header:not([data-scrolled="true"])
+  > div
+  > nav.desktop-header-nav
+  a {
   color: #542a19 !important;
 }
 
-body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled="true"]) > div > nav.desktop-header-nav a:hover {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header:not([data-scrolled="true"])
+  > div
+  > nav.desktop-header-nav
+  a:hover {
   background: rgb(84 42 25 / 0.1) !important;
   color: #542a19 !important;
 }
 
-body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled="true"]) > div > nav.desktop-header-nav a.bg-white\/25 {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header:not([data-scrolled="true"])
+  > div
+  > nav.desktop-header-nav
+  a.bg-white\/25 {
   background: #542a19 !important;
   color: #ffffff !important;
 }
 
-body:has(.category-pattern-hero) .public-site-shell > header[data-scrolled="true"] {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header[data-scrolled="true"] {
   background-color: rgba(75, 32, 15, 0.95) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
   box-shadow: 0 10px 25px -5px rgba(44, 19, 9, 0.4) !important;
@@ -1371,22 +1454,41 @@ body:has(.category-pattern-hero) .public-site-shell > header[data-scrolled="true
   backdrop-filter: blur(16px) !important;
 }
 
-body:has(.category-pattern-hero) .public-site-shell > header[data-scrolled="true"] > div > nav {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header[data-scrolled="true"]
+  > div
+  > nav {
   background: rgba(255, 255, 255, 0.1) !important;
   border-color: rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
 }
 
-body:has(.category-pattern-hero) .public-site-shell > header[data-scrolled="true"] > div > nav a {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header[data-scrolled="true"]
+  > div
+  > nav
+  a {
   color: rgba(255, 255, 255, 0.9) !important;
 }
 
-body:has(.category-pattern-hero) .public-site-shell > header[data-scrolled="true"] > div > nav a:hover {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header[data-scrolled="true"]
+  > div
+  > nav
+  a:hover {
   background: rgba(255, 255, 255, 0.15) !important;
   color: #ffffff !important;
 }
 
-body:has(.category-pattern-hero) .public-site-shell > header[data-scrolled="true"] > div > nav a.bg-white\/25 {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header[data-scrolled="true"]
+  > div
+  > nav
+  a.bg-white\/25 {
   background: rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
 }
@@ -1400,19 +1502,32 @@ body:has(.category-pattern-hero)
   box-shadow: 0 10px 25px -5px rgb(44 19 9 / 0.4) !important;
 }
 
-body:has(.category-pattern-hero) .public-site-shell > header > div > nav.desktop-header-nav {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header
+  > div
+  > nav.desktop-header-nav {
   border-color: rgb(255 255 255 / 0.7) !important;
   background: #ffffff !important;
   color: #542a19 !important;
   box-shadow: 0 8px 18px rgb(44 19 9 / 0.16) !important;
 }
 
-body:has(.category-pattern-hero) .public-site-shell > header > div > nav.desktop-header-nav a,
-body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled="true"]) > div > nav.desktop-header-nav a {
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header
+  > div
+  > nav.desktop-header-nav
+  a,
+body:has(.category-pattern-hero)
+  .public-site-shell
+  > header:not([data-scrolled="true"])
+  > div
+  > nav.desktop-header-nav
+  a {
   color: #542a19 !important;
   background: transparent !important;
 }
-
 
 /* Dark orange folk-art banner for every category header. */
 .public-site-shell .category-pattern-hero {
@@ -1433,7 +1548,8 @@ body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled=
   inset: 0;
   content: "";
   pointer-events: none;
-  background: url("/images/category-hero-brown.png") center bottom / 100% 100% no-repeat;
+  background: url("/images/category-hero-brown.png") center bottom / 100% 100%
+    no-repeat;
 }
 
 /* Keep the banner's top edge straight while carrying the folk-art wave at its bottom edge. */
@@ -1468,7 +1584,10 @@ body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled=
     padding-bottom: 70px !important;
   }
 
-  body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled="true"]) button[aria-controls="mobile-site-menu"] {
+  body:has(.category-pattern-hero)
+    .public-site-shell
+    > header:not([data-scrolled="true"])
+    button[aria-controls="mobile-site-menu"] {
     background: rgb(255 255 255 / 0.86) !important;
     border-color: rgb(84 42 25 / 0.3) !important;
     color: #542a19 !important;
@@ -1501,12 +1620,10 @@ body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled=
   }
 }
 
-
 @media (max-width: 640px) {
   .farming-category-page {
     background-attachment: scroll;
   }
-
 }
 
 .history-other-topics > div {
@@ -1519,8 +1636,6 @@ body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled=
   content: none;
   display: none;
 }
-
-
 
 @media (max-width: 1023px) {
   .history-heritage-hero {
@@ -1541,7 +1656,6 @@ body:has(.category-pattern-hero) .public-site-shell > header:not([data-scrolled=
     margin-top: 1rem;
     margin-bottom: 2rem;
   }
-
 }
 
 /* Home-page body frame: this sits in the empty space beside the news content. */
@@ -1562,6 +1676,7 @@ body:has(.public-page) .public-page {
   background-position: center, center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: scroll, fixed;
 }
 
 /* A carved, jewel-like divider gives the latest-news heading a clear editorial focal point. */
@@ -1689,9 +1804,98 @@ body:has(.public-page) .public-page {
   flex: 0 0 170px;
 }
 
+.food-heading-ornament {
+  width: 145px;
+  height: 81px;
+  flex-basis: 145px;
+  background-image: url("/images/food-heading-transparent.png");
+  background-repeat: no-repeat;
+  background-size: 250% auto;
+  mix-blend-mode: normal;
+  opacity: 1;
+}
+
+.food-heading-ornament--left {
+  background-position: left center;
+}
+.food-heading-ornament--right {
+  background-position: right center;
+}
+
+.wisdom-heading-ornament {
+  width: 135px;
+  height: 76px;
+  flex-basis: 135px;
+  background-image: url("/images/wisdom-heading-v3.png");
+  background-repeat: no-repeat;
+  background-size: 220% 100%;
+  mix-blend-mode: normal;
+  opacity: 1;
+}
+
+.wisdom-heading-ornament--left {
+  background-position: left center;
+}
+.wisdom-heading-ornament--right {
+  background-position: right center;
+}
+
+.pashupalan-heading-ornament {
+  width: 135px;
+  height: 76px;
+  flex-basis: 135px;
+  background-image: url("/images/pashupalan-heading-v2.png");
+  background-repeat: no-repeat;
+  background-size: 220% 100%;
+  mix-blend-mode: normal;
+  opacity: 1;
+}
+
+.pashupalan-heading-ornament--left {
+  background-position: left center;
+}
+.pashupalan-heading-ornament--right {
+  background-position: right center;
+}
+
+.history-heading-original {
+  width: 310px;
+  height: 173px;
+  flex-basis: 310px;
+}
+
+.home-history-heading
+  > div:first-child
+  img.history-heading-original:first-child {
+  margin-right: -26px;
+}
+.home-history-heading
+  > div:first-child
+  img.history-heading-original:last-child {
+  margin-left: -26px;
+}
+
+/* These illustrations already have transparent backgrounds. */
+.home-history-heading__image[src*="wisdom-ornament"],
+.home-history-heading__image[src*="food-ornament"],
+.home-history-heading__image[src*="pashupalan-ornament"] {
+  mix-blend-mode: normal;
+  opacity: 1;
+}
+
 /* Tighten gap between ornament and heading text */
 .home-history-heading > div:first-child {
   gap: 0px !important;
+}
+
+.home-history-heading > div:first-child h3 {
+  margin-inline: 8px;
+}
+
+@media (max-width: 640px) {
+  .home-history-heading > div:first-child h3 {
+    margin-inline: 4px;
+  }
 }
 
 /* Pull images into the text with negative margins */
@@ -1789,7 +1993,9 @@ body:has(.public-page) .public-page {
 
 @media (max-width: 640px) {
   .latest-news-section {
-    background-position: center, 58% center;
+    background-position:
+      center,
+      58% center;
   }
 
   .latest-news-divider {
@@ -1797,12 +2003,31 @@ body:has(.public-page) .public-page {
   }
 
   .latest-news-heading__content {
+    display: grid;
+    grid-template-columns: clamp(52px, 16vw, 86px) minmax(0, 1fr) clamp(
+        52px,
+        16vw,
+        86px
+      );
+    gap: 4px;
     min-height: 72px;
   }
 
   .latest-news-heading__content::before,
   .latest-news-heading__content::after {
-    display: none;
+    width: 100%;
+    height: clamp(42px, 13vw, 64px);
+    margin: 0;
+    background-size: auto clamp(38px, 11.8vw, 62px);
+  }
+
+  .latest-news-heading__title {
+    min-width: 0;
+  }
+
+  .latest-news-heading__title h2 {
+    font-size: clamp(18px, 4.8vw, 26px);
+    line-height: 1.3;
   }
 
   .home-history-heading {
@@ -1874,8 +2099,16 @@ body:has(.public-page) .public-page {
   border-color: #e4cba9 !important;
   background-color: #f7eee1;
   background-image:
-    radial-gradient(circle at 92% 15%, rgb(255 255 255 / 0.82), transparent 27rem),
-    radial-gradient(circle at 8% 78%, rgb(247 214 168 / 0.52), transparent 26rem),
+    radial-gradient(
+      circle at 92% 15%,
+      rgb(255 255 255 / 0.82),
+      transparent 27rem
+    ),
+    radial-gradient(
+      circle at 8% 78%,
+      rgb(247 214 168 / 0.52),
+      transparent 26rem
+    ),
     linear-gradient(135deg, #fffaf2 0%, #f9eddc 48%, #f4e2c7 100%);
 }
 
@@ -1903,8 +2136,14 @@ body:has(.public-page) .public-page {
 }
 
 /* The site-wide link hover rule must not darken text inside a brown header. */
-.public-site-shell > header[data-brown-navbar="true"] .desktop-header-nav:not(.navbar-white-pill) a:hover,
-.public-site-shell > header[data-brown-navbar="true"] .desktop-header-nav:not(.navbar-white-pill) a:focus-visible {
+.public-site-shell
+  > header[data-brown-navbar="true"]
+  .desktop-header-nav:not(.navbar-white-pill)
+  a:hover,
+.public-site-shell
+  > header[data-brown-navbar="true"]
+  .desktop-header-nav:not(.navbar-white-pill)
+  a:focus-visible {
   color: #ffffff !important;
 }
 
@@ -1928,9 +2167,7 @@ body:has(.category-pattern-hero)
   color: #542a19 !important;
 }
 
-body:has(.category-pattern-hero)
-  .desktop-header-nav.navbar-white-pill
-  a:hover,
+body:has(.category-pattern-hero) .desktop-header-nav.navbar-white-pill a:hover,
 body:has(.category-pattern-hero)
   .desktop-header-nav.navbar-white-pill
   a:focus-visible {
@@ -1969,7 +2206,7 @@ body:has(.category-pattern-hero)
 .homepage .site-header {
   position: relative;
   z-index: 5;
-  background: #F7F6EE;
+  background: #f7f6ee;
   border-bottom: 1px solid var(--border);
 }
 
@@ -2207,7 +2444,7 @@ body:has(.category-pattern-hero)
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background: #F7F6EE;
+  background: #f7f6ee;
   box-shadow: 0 3px 14px rgba(58, 39, 22, 0.04);
   transition:
     transform 180ms ease,
@@ -2319,7 +2556,7 @@ body:has(.category-pattern-hero)
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: #F7F6EE;
+  background: #f7f6ee;
 }
 
 .homepage .category-image {
@@ -2353,7 +2590,7 @@ body:has(.category-pattern-hero)
 
 .homepage .videos-section,
 .homepage .gallery-section {
-  background: #F7F6EE;
+  background: #f7f6ee;
 }
 
 .homepage .reels-grid {
@@ -2369,7 +2606,7 @@ body:has(.category-pattern-hero)
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: #F7F6EE;
+  background: #f7f6ee;
 }
 
 .homepage .reel-image {
@@ -2415,7 +2652,7 @@ body:has(.category-pattern-hero)
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 10px;
-  background: #F7F6EE;
+  background: #f7f6ee;
 }
 
 .homepage .gallery-image {
@@ -2489,7 +2726,7 @@ body:has(.category-pattern-hero)
 
 .homepage .social-links .social-link:hover {
   border-color: #fff;
-  background: #F7F6EE;
+  background: #f7f6ee;
   color: var(--brand-dark);
 }
 

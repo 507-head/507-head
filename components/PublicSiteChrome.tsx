@@ -48,6 +48,8 @@ function Header({
     pathname.startsWith(`/categories/${slug}/`) ||
     pathname === `/category/${slug}` ||
     pathname.startsWith(`/category/${slug}/`);
+  const isAboutPage = pathname === "/about" || pathname.startsWith("/about/");
+  const navCategories = categories.slice(0, 6);
   const [hasScrolled, setHasScrolled] = useState(
     !isHomepage && !isCategoryPage,
   );
@@ -69,9 +71,9 @@ function Header({
   useEffect(() => {
     const updateHeader = () => {
       const scrolled = isHomepage
-        ? window.scrollY > 720
+        ? window.scrollY > 40
         : isCategoryPage
-          ? window.scrollY > 380
+          ? window.scrollY > 40
           : true;
       setHasScrolled(scrolled);
       headerRef.current?.setAttribute("data-scrolled", String(scrolled));
@@ -113,11 +115,11 @@ function Header({
               alt="507 हैड"
               width={96}
               height={96}
-                className="logo-handbook-tone h-12 w-12 shrink-0 rounded-2xl border border-white/70 bg-white object-cover shadow-lg sm:h-14 sm:w-14"
+              className="logo-handbook-tone h-10 w-10 sm:h-12 sm:w-12 shrink-0 rounded-2xl border border-white/70 bg-white object-cover shadow-lg"
             />
             <span className="min-w-0 leading-tight">
               <strong
-                className={`block text-lg font-black tracking-tight sm:text-2xl ${
+                className={`block text-base sm:text-2xl font-black tracking-tight ${
                   usesHeroOverlay || usesBrownNavbar
                     ? "text-white drop-shadow-md"
                     : "text-[#8a4b1f]"
@@ -126,7 +128,7 @@ function Header({
                 507 हैड
               </strong>
               <small
-                className={`hidden text-xs font-semibold min-[390px]:block ${
+                className={`block text-[11px] sm:text-xs font-semibold whitespace-nowrap ${
                   usesHeroOverlay || usesBrownNavbar
                     ? "text-[#fff1d4]"
                     : "text-[#8a4b1f]"
@@ -159,7 +161,7 @@ function Header({
             >
               होम
             </Link>
-            {categories.map(({ slug, name }) => {
+            {navCategories.map(({ slug, name }) => {
               const isActive = isCategoryActive(slug);
               return (
                 <Link
@@ -167,7 +169,7 @@ function Header({
                   href={`/categories/${slug}`}
                   prefetch
                   aria-current={isActive ? "page" : undefined}
-                  className={`transition-colors ${isActive ? "nav-active-link" : ""} ${
+                  className={`transition-colors whitespace-nowrap ${isActive ? "nav-active-link" : ""} ${
                     usesWhitePillNav
                       ? "rounded-full px-3 py-1.5 text-[#542A19] hover:bg-[#f6ebe2]"
                       : usesBrownNavbar
@@ -179,6 +181,20 @@ function Header({
                 </Link>
               );
             })}
+            <Link
+              href="/about"
+              prefetch
+              aria-current={isAboutPage ? "page" : undefined}
+              className={`transition-colors whitespace-nowrap ${isAboutPage ? "nav-active-link font-bold" : ""} ${
+                usesWhitePillNav
+                  ? "rounded-full px-3 py-1.5 text-[#542A19] hover:bg-[#f6ebe2]"
+                  : usesBrownNavbar
+                    ? "text-white hover:text-[#fff1d4]"
+                    : "hover:text-[#6b3915]"
+              }`}
+            >
+              हमारे बारे में
+            </Link>
           </nav>
           <div className="hidden shrink-0 items-center gap-3 xl:flex">
             {socials.map(([name, href, label]) => (
@@ -206,7 +222,7 @@ function Header({
             aria-controls="mobile-site-menu"
             aria-label={menuOpen ? "मेनू बंद करें" : "मेनू खोलें"}
             onClick={() => setMenuOpen((isOpen) => !isOpen)}
-            className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border transition focus:outline-none focus:ring-2 focus:ring-[#245d92] focus:ring-offset-2 xl:hidden ${
+            className={`grid h-10 w-10 sm:h-11 sm:w-11 shrink-0 place-items-center rounded-xl border transition focus:outline-none focus:ring-2 focus:ring-[#245d92] focus:ring-offset-2 xl:hidden ${
               usesWhitePillNav && !usesBrownNavbar
                 ? "border-white/80 bg-white/95 text-[#542A19] hover:bg-white"
                 : usesBrownNavbar
@@ -236,7 +252,7 @@ function Header({
               >
                 होम
               </Link>
-              {categories.map(({ slug, name }) => {
+              {navCategories.map(({ slug, name }) => {
                 const isActive = isCategoryActive(slug);
                 return (
                   <Link
@@ -255,6 +271,29 @@ function Header({
                   </Link>
                 );
               })}
+              <Link
+                href="/about"
+                prefetch
+                onClick={() => setMenuOpen(false)}
+                aria-current={isAboutPage ? "page" : undefined}
+                className={`rounded-lg px-4 py-3 text-sm transition text-[#542A19] ${
+                  isAboutPage
+                    ? "active-mobile-link bg-[#f2e5df] font-bold text-[#542A19] shadow-sm"
+                    : "font-semibold text-[#542A19] hover:bg-[#f8f1ed]"
+                }`}
+              >
+                हमारे बारे में
+              </Link>
+              {categories.length > 6 && (
+                <Link
+                  href="/categories"
+                  prefetch
+                  onClick={() => setMenuOpen(false)}
+                  className="rounded-lg px-4 py-3 text-sm font-semibold text-[#8a4b1f] hover:bg-[#f8f1ed]"
+                >
+                  सभी श्रेणियाँ ({categories.length}) →
+                </Link>
+              )}
             </nav>
             <div className="mt-4 flex gap-3 border-t border-[#eadfd8] pt-4">
               {socials.map(([name, href, label]) => (
@@ -272,10 +311,7 @@ function Header({
             </div>
           </div>
         ) : null}
-        <nav
-          aria-label="श्रेणियाँ"
-          className="hidden"
-        >
+        <nav aria-label="श्रेणियाँ" className="hidden">
           <Link
             href="/"
             prefetch
@@ -317,7 +353,7 @@ function Footer({
               alt="507 हैड"
               width={96}
               height={96}
-                className="logo-handbook-tone h-12 w-12 rounded-lg bg-white object-cover"
+              className="logo-handbook-tone h-12 w-12 rounded-lg bg-white object-cover"
             />
             <span className="leading-tight">
               <strong className="block text-xl font-black text-[#222]">
@@ -351,7 +387,9 @@ function Footer({
           </ul>
         </div>
         <div>
-          <h4 className="mb-4 text-sm font-bold text-[#552b12]">507 Head लिंक</h4>
+          <h4 className="mb-4 text-sm font-bold text-[#552b12]">
+            507 Head लिंक
+          </h4>
           <ul className="space-y-2 text-xs">
             <li>
               <Link href="/about" className="hover:text-[#8a4b1f]">
@@ -396,7 +434,9 @@ function Footer({
         </div>
       </div>
       <div className="relative top-1 mx-auto mt-4 flex max-w-6xl flex-col items-center justify-between gap-3 px-4 py-3 text-center font-[Mukta] text-[12px] leading-4 text-[#FFFFFF] drop-shadow-[0_1px_2px_rgba(67,20,8,0.9)] max-sm:-top-12 sm:h-14 sm:flex-row sm:gap-4 sm:p-[20px_24px] sm:text-left">
-        <p className="relative top-2 text-[#FFFFFF]">© 2026 507 हैड। सर्वाधिकार सुरक्षित।</p>
+        <p className="relative top-2 text-[#FFFFFF]">
+          © 2026 507 हैड। सर्वाधिकार सुरक्षित।
+        </p>
       </div>
     </footer>
   );
@@ -412,6 +452,122 @@ export default function PublicSiteChrome({
   const pathname = usePathname();
   const router = useRouter();
   const prefetchedRoutes = useRef(new Set<string>());
+  useEffect(() => {
+    if (
+      !("IntersectionObserver" in window) ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
+
+    const observed = new WeakSet<Element>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const heading = entry.target;
+          const distance = window.matchMedia("(max-width: 639px)").matches
+            ? 20
+            : 40;
+          const timing = { duration: 750, easing: "ease-out" };
+          if (heading.matches(".latest-news-heading__content")) {
+            heading.animate(
+              [{ translate: `-${distance}px 0` }, { translate: "0 0" }],
+              { ...timing, pseudoElement: "::before" },
+            );
+            heading.animate(
+              [{ translate: `${distance}px 0` }, { translate: "0 0" }],
+              { ...timing, pseudoElement: "::after" },
+            );
+          } else {
+            const title = heading.querySelector("h3");
+            heading
+              .querySelectorAll(".home-history-heading__image")
+              .forEach((image) => {
+                const left =
+                  title &&
+                  Boolean(
+                    image.compareDocumentPosition(title) &
+                    Node.DOCUMENT_POSITION_FOLLOWING,
+                  );
+                image.animate(
+                  [
+                    { translate: `${left ? -distance : distance}px 0` },
+                    { translate: "0 0" },
+                  ],
+                  timing,
+                );
+              });
+          }
+          observer.unobserve(heading);
+        }
+      },
+      { threshold: 0.25 },
+    );
+    const observeHeadings = () => {
+      document
+        .querySelectorAll(
+          ".latest-news-heading__content, .home-history-heading",
+        )
+        .forEach((heading) => {
+          if (!observed.has(heading)) {
+            observed.add(heading);
+            observer.observe(heading);
+          }
+        });
+    };
+    observeHeadings();
+    const changes = new MutationObserver(observeHeadings);
+    changes.observe(document.body, { childList: true, subtree: true });
+    return () => {
+      changes.disconnect();
+      observer.disconnect();
+    };
+  }, [pathname]);
+  useEffect(() => {
+    if (
+      !("IntersectionObserver" in window) ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
+
+    const observed = new WeakSet<Element>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const fromRight = entry.target.closest(".scroll-reveal-from-right");
+          const distance = window.matchMedia("(max-width: 639px)").matches
+            ? 20
+            : 36;
+          entry.target.animate(
+            [
+              { translate: `${fromRight ? distance : -distance}px 0` },
+              { translate: "0 0" },
+            ],
+            { duration: 600, easing: "ease-out" },
+          );
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.25 },
+    );
+
+    const observeCards = () => {
+      document.querySelectorAll(".scroll-reveal-card").forEach((card) => {
+        if (!observed.has(card)) {
+          observed.add(card);
+          observer.observe(card);
+        }
+      });
+    };
+    observeCards();
+    const changes = new MutationObserver(observeCards);
+    changes.observe(document.body, { childList: true, subtree: true });
+    return () => {
+      changes.disconnect();
+      observer.disconnect();
+    };
+  }, [pathname]);
   useEffect(() => {
     const prefetch = (href: string) => {
       if (!href.startsWith("/") || prefetchedRoutes.current.has(href)) return;

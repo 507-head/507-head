@@ -28,7 +28,8 @@ export default async function CategoriesPage() {
           </h1>
 
           <p className="mt-4 max-w-3xl text-base sm:text-lg text-[#666] leading-relaxed">
-            थार, खेती, संस्कृति और ग्रामीण जीवन से जुड़ी अपनी पसंद की श्रेणी चुनें।
+            थार, खेती, संस्कृति और ग्रामीण जीवन से जुड़ी अपनी पसंद की श्रेणी
+            चुनें।
           </p>
 
           <div className="mt-4 text-xs font-semibold text-[#8a4b1f]">
@@ -44,7 +45,7 @@ export default async function CategoriesPage() {
             <Link
               key={category.id || category.slug}
               href={`/categories/${category.slug}`}
-              className="group relative flex items-center justify-between rounded-2xl border border-[#eadbc9] bg-white p-5 sm:p-6 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-[#8a4b1f] hover:bg-gradient-to-b hover:from-white hover:to-[#fffaf5] hover:shadow-md"
+              className="scroll-reveal-card group relative flex items-center justify-between rounded-2xl border border-[#eadbc9] bg-white p-5 sm:p-6 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:border-[#8a4b1f] hover:bg-gradient-to-b hover:from-white hover:to-[#fffaf5] hover:shadow-md"
             >
               <div className="min-w-0 space-y-1.5 pr-4">
                 <h2 className="text-lg sm:text-xl font-black text-[#542a19] transition-colors group-hover:text-[#8a4b1f]">

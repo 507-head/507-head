@@ -41,8 +41,7 @@ const HERO_IMAGES: Record<string, string> = {
     "/images/hero-water-efficient-farming-v2.png",
   "rathi-gaay-marusthal-ki-kamdhenu": "/images/hero-rathi-cow-v2.png",
   "thar-sanskriti-lokgeet-parampara": "/images/hero-thar-folk-music-v2.png",
-  "kisan-mehanat-anubhav-desh-ki-shaan":
-    "/images/hero-desert-farmers-v2.png",
+  "kisan-mehanat-anubhav-desh-ki-shaan": "/images/hero-desert-farmers-v2.png",
 };
 
 const fallbackReels = [
@@ -165,7 +164,16 @@ const CATEGORY_META: Record<string, CategoryMeta> = {
     borderHover: "hover:border-[#8a4b1f]",
     tagline: "धरोहर व इतिहास",
     icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <svg
+        className="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
         <path d="M3 21h18" />
         <path d="M5 21V10l2-2 2 2v11" />
         <path d="M15 21V10l2-2 2 2v11" />
@@ -182,7 +190,16 @@ const CATEGORY_META: Record<string, CategoryMeta> = {
     borderHover: "hover:border-[#4d662e]",
     tagline: "उन्नत व नहरी कृषि",
     icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <svg
+        className="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
         <path d="M12 22v-9" />
         <path d="M12 13a4.5 4.5 0 0 0 4.5-4.5c0-3-4.5-5.5-4.5-5.5s-4.5 2.5-4.5 5.5A4.5 4.5 0 0 0 12 13Z" />
         <path d="M12 17a4 4 0 0 1 4-4" />
@@ -197,7 +214,16 @@ const CATEGORY_META: Record<string, CategoryMeta> = {
     borderHover: "hover:border-[#9a681d]",
     tagline: "मेहनत व जनजीवन",
     icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <svg
+        className="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
         <path d="M2 22 16 8" />
         <path d="M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z" />
         <path d="M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94Z" />
@@ -215,7 +241,16 @@ const CATEGORY_META: Record<string, CategoryMeta> = {
     borderHover: "hover:border-[#7d4e28]",
     tagline: "लोक समझ व सीख",
     icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <svg
+        className="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
         <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
         <path d="M8 7h8" />
         <path d="M8 11h8" />
@@ -230,7 +265,16 @@ const CATEGORY_META: Record<string, CategoryMeta> = {
     borderHover: "hover:border-[#8e3c23]",
     tagline: "लोक कला व परंपरा",
     icon: (
-      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <svg
+        className="h-5 w-5"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
         <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
         <path d="M5 3v4M3 5h4M19 17v4M17 19h4" />
       </svg>
@@ -261,7 +305,16 @@ const DEFAULT_CATEGORY_META: CategoryMeta = {
   borderHover: "hover:border-[#8a4b1f]",
   tagline: "विशेष रिपोर्ट व लेख",
   icon: (
-    <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg
+      className="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
       <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
     </svg>
   ),
@@ -306,9 +359,8 @@ export default async function Home() {
   const heroSlides = HERO_ARTICLE_SLUGS.map((slug) =>
     allArticles.find((article) => article.slug === slug),
   )
-    .filter(
-      (article): article is (typeof allArticles)[number] =>
-        Boolean(article),
+    .filter((article): article is (typeof allArticles)[number] =>
+      Boolean(article),
     )
     .map((article) => ({
       image: HERO_IMAGES[article.slug],
@@ -355,7 +407,10 @@ export default async function Home() {
           <div className="mb-5 flex items-end justify-between gap-4 sm:mb-7">
             <div>
               <div className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-[#8a4b1f]" aria-hidden="true" />
+                <span
+                  className="h-2 w-2 rounded-full bg-[#8a4b1f]"
+                  aria-hidden="true"
+                />
                 <p className="text-xs font-bold uppercase tracking-wider text-[#8a4b1f]">
                   विषय चुनें
                 </p>
@@ -488,7 +543,7 @@ export default async function Home() {
                   लेटेस्ट अपडेट्स
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-black text-[#222] mt-1">
-                  ताज़ा खबरें और रिपोर्ट
+                  ताज़ा लेख
                 </h2>
               </div>
             </div>
@@ -504,7 +559,7 @@ export default async function Home() {
               <article
                 key={article.id}
                 data-article-href={`/blog/${article.slug}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-[#e5ddd3] bg-[#F7F6EE] transition duration-200 hover:-translate-y-1 hover:shadow-lg"
+                className="scroll-reveal-card group flex flex-col overflow-hidden rounded-2xl border border-[#e5ddd3] bg-[#F7F6EE] transition duration-200 hover:-translate-y-1 hover:shadow-lg"
               >
                 <Link
                   href={`/blog/${article.slug}`}
@@ -564,7 +619,6 @@ export default async function Home() {
 
       {/* Reel Thumbnail Strip (Static Thumbnails linking to Instagram) */}
       <section className="reels-showcase-section border-y border-[#e5ddd3] bg-[#fafaf8] py-14">
-
         <div className="reels-showcase-section__inner mx-auto max-w-7xl px-4 sm:px-6">
           <div className="mb-6 flex items-center justify-between">
             <div>
@@ -601,13 +655,17 @@ export default async function Home() {
       {/* About 507 Head Section */}
       <section
         aria-labelledby="homepage-about-title"
-        className="relative border-y border-[#dfc5a6] bg-[#e8d5bc] bg-cover bg-right md:bg-center bg-no-repeat py-14 sm:py-18 md:py-20 overflow-hidden"
-        style={{ backgroundImage: "url('/images/about-fort-bg.jpg')" }}
+        className="homepage-about-section relative border-y border-[#dfc5a6] bg-[#e8d5bc] py-14 sm:py-18 md:py-20 overflow-hidden"
       >
-        {/* Soft Left Darkening Gradient Overlay */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#dec29c]/80 via-[#e9d2b2]/50 to-transparent"
+          className="homepage-about-background pointer-events-none absolute inset-0 bg-no-repeat"
+          style={{ backgroundImage: "url('/images/about-fort-bg.jpg')" }}
+        />
+        {/* Keep text readable on the left and the desktop artwork clear on the right. */}
+        <div
+          aria-hidden="true"
+          className="homepage-about-overlay pointer-events-none absolute inset-0"
         />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
@@ -624,7 +682,8 @@ export default async function Home() {
               id="homepage-about-title"
               className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-[#542a19] leading-[1.15]"
             >
-              हमारे बारे में — <span className="text-[#8a4b1f]">507 हैड की कहानी</span>
+              हमारे बारे में —{" "}
+              <span className="text-[#8a4b1f]">507 हैड की कहानी</span>
             </h2>
 
             <p className="text-base sm:text-lg font-bold text-[#8a4b1f]">
@@ -632,11 +691,17 @@ export default async function Home() {
             </p>
 
             <p className="text-sm sm:text-base leading-relaxed text-[#4a3222]">
-              बीकानेर के छतरगढ़ अंचल में स्थित <strong className="text-[#542a19]">507 हैड</strong> केवल एक नहरी जल वितरण केंद्र नहीं, बल्कि थार मरुस्थल के रेतीले धोरों में जीवन, कड़े संघर्ष, नहरी क्रांति और ग्रामीण उत्थान की ऐतिहासिक पहचान है।
+              बीकानेर के छतरगढ़ अंचल में स्थित{" "}
+              <strong className="text-[#542a19]">507 हैड</strong> केवल एक नहरी
+              जल वितरण केंद्र नहीं, बल्कि थार मरुस्थल के रेतीले धोरों में जीवन,
+              कड़े संघर्ष, नहरी क्रांति और ग्रामीण उत्थान की ऐतिहासिक पहचान है।
             </p>
 
             <p className="text-xs sm:text-sm leading-relaxed text-[#5e4433]">
-              हमारा डिजिटल मंच पश्चिमी राजस्थान के किसानों के अनथक परिश्रम, नहरी खेती के आधुनिक तौर-तरीकों, राठी गोवंश की समृद्ध परंपरा, बुजुर्गों के अमूल्य अनुभवों और लोक संस्कृति को प्रामाणिकता के साथ सहेजने के लिए समर्पित है।
+              हमारा डिजिटल मंच पश्चिमी राजस्थान के किसानों के अनथक परिश्रम, नहरी
+              खेती के आधुनिक तौर-तरीकों, राठी गोवंश की समृद्ध परंपरा, बुजुर्गों
+              के अमूल्य अनुभवों और लोक संस्कृति को प्रामाणिकता के साथ सहेजने के
+              लिए समर्पित है।
             </p>
 
             {/* Action Button */}
@@ -645,7 +710,9 @@ export default async function Home() {
                 href="/about"
                 className="group inline-flex items-center gap-2 rounded-full bg-[#8a4b1f] hover:bg-[#542a19] px-7 py-3.5 text-xs sm:text-sm font-bold text-white hover:text-white shadow-md transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5 uppercase tracking-wide"
               >
-                <span className="text-white hover:text-white">और जानें / पूरा परिचय पढ़ें</span>
+                <span className="text-white hover:text-white">
+                  और जानें / पूरा परिचय पढ़ें
+                </span>
                 <span
                   aria-hidden="true"
                   className="text-white hover:text-white transition-transform duration-200 group-hover:translate-x-1"
@@ -659,7 +726,7 @@ export default async function Home() {
       </section>
 
       {/* Category Blocks: 3 cards per category with individual thematic backgrounds */}
-      {categories.map((cat) => {
+      {categories.slice(0, 6).map((cat, sectionIndex) => {
         const catArticles = allArticles.filter(
           (a) => a.category_slug === cat.slug,
         );
@@ -679,10 +746,12 @@ export default async function Home() {
         return (
           <section
             key={cat.slug}
-            className={`w-full py-8 sm:py-14 border-b transition-colors duration-200 ${theme.sectionBg} ${theme.borderColor}`}
+            className={`w-full py-8 sm:py-14 border-b transition-colors duration-200 ${sectionIndex % 2 === 0 ? "scroll-reveal-from-right" : ""} ${theme.sectionBg} ${theme.borderColor}`}
           >
             <div className="mx-auto max-w-7xl px-4 sm:px-6">
-              <div className={`mb-6 flex flex-wrap items-center justify-between gap-3 pb-3 ${hasCustomHeading ? "home-history-heading" : "border-b-2 border-[#8a4b1f]"}`}>
+              <div
+                className={`mb-6 flex flex-wrap items-center justify-between gap-3 pb-3 ${hasCustomHeading ? "home-history-heading" : "border-b-2 border-[#8a4b1f]"}`}
+              >
                 <div className="flex items-center gap-3">
                   {!hasCustomHeading && (
                     <span className="h-6 w-1.5 rounded-full bg-[#8a4b1f]" />
@@ -693,7 +762,7 @@ export default async function Home() {
                       src="/images/history-ornament-left.png"
                       alt=""
                       aria-hidden="true"
-                      className="home-history-heading__image"
+                      className="home-history-heading__image history-heading-original"
                       style={{ transform: "scaleX(-1)" }}
                     />
                   )}
@@ -716,12 +785,9 @@ export default async function Home() {
                     />
                   )}
                   {cat.slug === "wisdom" && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src="/images/wisdom-ornament-left.png"
-                      alt=""
+                    <span
                       aria-hidden="true"
-                      className="home-history-heading__image home-history-heading__image--farming"
+                      className="home-history-heading__image home-history-heading__image--farming wisdom-heading-ornament wisdom-heading-ornament--left"
                     />
                   )}
                   {cat.slug === "heritage" && (
@@ -734,21 +800,15 @@ export default async function Home() {
                     />
                   )}
                   {cat.slug === "pashupalan" && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src="/images/pashupalan-ornament-left.png"
-                      alt=""
+                    <span
                       aria-hidden="true"
-                      className="home-history-heading__image home-history-heading__image--farming"
+                      className="home-history-heading__image home-history-heading__image--farming pashupalan-heading-ornament pashupalan-heading-ornament--left"
                     />
                   )}
                   {cat.slug === "food" && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src="/images/food-ornament-left.png"
-                      alt=""
+                    <span
                       aria-hidden="true"
-                      className="home-history-heading__image home-history-heading__image--farming"
+                      className="home-history-heading__image home-history-heading__image--farming food-heading-ornament food-heading-ornament--left"
                     />
                   )}
                   <h3 className="text-2xl sm:text-3xl font-black text-[#222] tracking-tight">
@@ -760,7 +820,7 @@ export default async function Home() {
                       src="/images/history-ornament-left.png"
                       alt=""
                       aria-hidden="true"
-                      className="home-history-heading__image"
+                      className="home-history-heading__image history-heading-original"
                     />
                   )}
                   {cat.slug === "farming" && (
@@ -782,12 +842,9 @@ export default async function Home() {
                     />
                   )}
                   {cat.slug === "wisdom" && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src="/images/wisdom-ornament-right.png"
-                      alt=""
+                    <span
                       aria-hidden="true"
-                      className="home-history-heading__image home-history-heading__image--farming"
+                      className="home-history-heading__image home-history-heading__image--farming wisdom-heading-ornament wisdom-heading-ornament--right"
                     />
                   )}
                   {cat.slug === "heritage" && (
@@ -800,21 +857,15 @@ export default async function Home() {
                     />
                   )}
                   {cat.slug === "pashupalan" && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src="/images/pashupalan-ornament-right.png"
-                      alt=""
+                    <span
                       aria-hidden="true"
-                      className="home-history-heading__image home-history-heading__image--farming"
+                      className="home-history-heading__image home-history-heading__image--farming pashupalan-heading-ornament pashupalan-heading-ornament--right"
                     />
                   )}
                   {cat.slug === "food" && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src="/images/food-ornament-right.png"
-                      alt=""
+                    <span
                       aria-hidden="true"
-                      className="home-history-heading__image home-history-heading__image--farming"
+                      className="home-history-heading__image home-history-heading__image--farming food-heading-ornament food-heading-ornament--right"
                     />
                   )}
                 </div>
@@ -826,7 +877,10 @@ export default async function Home() {
                   <span aria-hidden="true">→</span>
                 </Link>
                 {hasCustomHeading && (
-                  <div className="home-history-heading__divider" aria-hidden="true">
+                  <div
+                    className="home-history-heading__divider"
+                    aria-hidden="true"
+                  >
                     <span />
                     <i>✦</i>
                     <span />
@@ -839,7 +893,7 @@ export default async function Home() {
                   <article
                     key={article.id}
                     data-article-href={`/blog/${article.slug}`}
-                    className={`group flex flex-col overflow-hidden rounded-xl border transition hover:-translate-y-1 hover:shadow-lg shadow-sm ${theme.cardBg}`}
+                    className={`scroll-reveal-card group flex flex-col overflow-hidden rounded-xl border transition hover:-translate-y-1 hover:shadow-lg shadow-sm ${theme.cardBg}`}
                   >
                     <Link
                       href={`/blog/${article.slug}`}

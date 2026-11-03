@@ -6,16 +6,18 @@ import { getCategories } from "@/lib/content";
 import { syncApprovedCategories, updateCategory } from "./actions";
 import CategoryStatusNotice from "./CategoryStatusNotice";
 import CategoryCreateForm from "./CategoryCreateForm";
+import CategoryDeleteButton from "./CategoryDeleteButton";
+import CategoryReorderControl from "./CategoryReorderControl";
 
 export const instant = false;
 
 export default async function AdminCategoriesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ category_status?: string }>;
+  searchParams: Promise<{ category_status?: string; message?: string }>;
 }) {
   await connection();
-  const { category_status } = await searchParams;
+  const { category_status, message } = await searchParams;
   const supabase = await createClient();
 
   const {
@@ -70,7 +72,7 @@ export default async function AdminCategoriesPage({
           </form>
         </header>
 
-        <CategoryStatusNotice status={category_status} />
+        <CategoryStatusNotice status={category_status} message={message} />
 
         <section className="mb-8 rounded-2xl border border-[#e8dac9] bg-[#F7F6EE] p-5 shadow-sm md:p-6">
           <h2 className="text-lg font-bold">नई श्रेणी जोड़ें</h2>
@@ -81,7 +83,7 @@ export default async function AdminCategoriesPage({
         </section>
 
         <div className="overflow-x-auto rounded-2xl border border-[#e8dac9] bg-[#F7F6EE] shadow-sm">
-          <table className="w-full min-w-[760px] text-left text-sm">
+          <table className="w-full min-w-[840px] text-left text-sm">
             <thead className="border-b border-[#e8dac9] bg-[#F7F4DE] text-xs font-bold uppercase tracking-wider text-[#6b3915]">
               <tr>
                 <th className="px-6 py-4">क्रम</th>
@@ -90,12 +92,20 @@ export default async function AdminCategoriesPage({
                 <th className="px-6 py-4">Subtitle</th>
                 <th className="px-6 py-4">स्थिति</th>
                 <th className="px-6 py-4">संपादन</th>
+                <th className="px-6 py-4 text-right">हटाएं</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-[#f0e7dd]">
               {categories.map((cat, index) => (
                 <tr key={cat.slug} className="hover:bg-[#fcfaf7]">
-                  <td className="px-6 py-4 font-mono text-xs">{index + 1}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <CategoryReorderControl
+                      id={cat.id}
+                      slug={cat.slug}
+                      currentPosition={index + 1}
+                      totalCategories={categories.length}
+                    />
+                  </td>
                   <td className="px-6 py-4 font-bold text-[#222]">
                     <Link
                       href={`/categories/${cat.slug}`}
@@ -121,21 +131,45 @@ export default async function AdminCategoriesPage({
                       <summary className="cursor-pointer font-semibold text-[#8a4b1f] hover:underline">
                         संपादित करें
                       </summary>
-                      <form action={updateCategory} className="mt-3 grid gap-2 rounded-xl border border-[#e8dac9] bg-white p-3">
+                      <form
+                        action={updateCategory}
+                        className="mt-3 grid gap-2 rounded-xl border border-[#e8dac9] bg-white p-3"
+                      >
                         <input type="hidden" name="id" value={cat.id} />
                         <label className="grid gap-1 text-xs font-semibold text-[#542a19]">
                           श्रेणी का नाम
-                          <input name="name" required minLength={2} defaultValue={cat.name} className="rounded-lg border border-[#e7ddd0] px-3 py-2 font-normal text-[#222]" />
+                          <input
+                            name="name"
+                            required
+                            minLength={2}
+                            defaultValue={cat.name}
+                            className="rounded-lg border border-[#e7ddd0] px-3 py-2 font-normal text-[#222]"
+                          />
                         </label>
                         <label className="grid gap-1 text-xs font-semibold text-[#542a19]">
                           Subtitle
-                          <textarea name="description" defaultValue={cat.description} rows={3} className="resize-y rounded-lg border border-[#e7ddd0] px-3 py-2 font-normal text-[#222]" />
+                          <textarea
+                            name="description"
+                            defaultValue={cat.description}
+                            rows={3}
+                            className="resize-y rounded-lg border border-[#e7ddd0] px-3 py-2 font-normal text-[#222]"
+                          />
                         </label>
-                        <button type="submit" className="w-fit rounded-lg bg-[#8a4b1f] px-3 py-2 text-xs font-bold text-white hover:bg-[#6b3915]">
+                        <button
+                          type="submit"
+                          className="w-fit rounded-lg bg-[#8a4b1f] px-3 py-2 text-xs font-bold text-white hover:bg-[#6b3915]"
+                        >
                           बदलाव सहेजें
                         </button>
                       </form>
                     </details>
+                  </td>
+                  <td className="px-6 py-4 text-right whitespace-nowrap">
+                    <CategoryDeleteButton
+                      id={cat.id}
+                      slug={cat.slug}
+                      name={cat.name}
+                    />
                   </td>
                 </tr>
               ))}
