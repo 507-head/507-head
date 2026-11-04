@@ -78,7 +78,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
       />
 
       {/* Main Header */}
-{/* Author Hero Profile Header */}
+      {/* Author Hero Profile Header */}
       <section className="border-b border-[#e5ddd3] bg-gradient-to-b from-[#F7F4DE] to-[#fcf9f5] py-12">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           {/* Breadcrumbs */}
@@ -141,7 +141,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
         </div>
       </section>
 
-      {/* Author Articles Grid */}
+      {/* Author Articles Grid  */}
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <div className="mb-8 border-b-2 border-[#8a4b1f] pb-3">
           <h2 className="text-2xl font-black text-[#222]">
@@ -226,6 +226,6 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
           </div>
         )}
       </section>
-</main>
+    </main>
   );
 }
