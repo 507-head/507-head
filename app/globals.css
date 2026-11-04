@@ -1237,17 +1237,26 @@ button {
 .homepage-about-overlay {
   background-image: linear-gradient(
     to right,
-    #e8d5bc,
-    rgba(232, 213, 188, 0.85) 40%,
-    transparent 75%
+    rgba(232, 213, 188, 0.96),
+    rgba(232, 213, 188, 0.88) 40%,
+    rgba(244, 231, 211, 0.5) 75%,
+    rgba(244, 231, 211, 0.4)
   );
 }
 
 .homepage-about-background {
-  inset: 0;
+  inset: -4px;
   background-size: cover;
   background-position: right center;
-  background-attachment: scroll;
+  background-attachment: fixed;
+  filter: blur(0.6px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .homepage-about-background,
+  .latest-news-section {
+    background-attachment: scroll;
+  }
 }
 
 @media (max-width: 1023px) {

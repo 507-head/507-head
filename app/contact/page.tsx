@@ -43,7 +43,7 @@ export default function ContactPage() {
       </section>
 
       <section className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
-          <div className="rounded-2xl border border-[#e5ddd3] bg-[#F7F6EE] p-8 shadow-sm">
+          <div className="scroll-reveal-card rounded-2xl border border-[#e5ddd3] bg-[#F7F6EE] p-8 shadow-sm">
             {submitted ? (
               <div className="p-8 text-center space-y-4">
                 <span className="text-5xl block">✅</span>

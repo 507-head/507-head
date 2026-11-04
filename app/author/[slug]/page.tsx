@@ -167,7 +167,7 @@ export default async function AuthorPage({ params }: AuthorPageProps) {
               <article
                 key={article.id}
                 data-article-href={`/blog/${article.slug}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-[#e5ddd3] bg-[#F7F6EE] transition duration-200 hover:-translate-y-1 hover:shadow-lg"
+                className="scroll-reveal-card group flex flex-col overflow-hidden rounded-2xl border border-[#e5ddd3] bg-[#F7F6EE] transition duration-200 hover:-translate-y-1 hover:shadow-lg"
               >
                 <Link
                   href={`/blog/${article.slug}`}

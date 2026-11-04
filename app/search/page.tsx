@@ -75,7 +75,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                   <article
                     key={article.id}
                     data-article-href={`/blog/${article.slug}`}
-                    className="rounded-2xl border border-[#e7ddd0] bg-[#F7F6EE] p-5 shadow-sm"
+                    className="scroll-reveal-card rounded-2xl border border-[#e7ddd0] bg-[#F7F6EE] p-5 shadow-sm"
                   >
                     <p className="text-xs font-bold text-[#8a4b1f]">
                       {article.category_name}

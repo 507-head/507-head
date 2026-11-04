@@ -69,7 +69,7 @@ export default async function CategoryPaginationPage({
             <article
               key={article.id}
               data-article-href={`/blog/${article.slug}`}
-              className="overflow-hidden rounded-2xl border border-[#e7ddd0] bg-[#F7F6EE] shadow-sm"
+              className="scroll-reveal-card overflow-hidden rounded-2xl border border-[#e7ddd0] bg-[#F7F6EE] shadow-sm"
             >
               <Link
                 href={`/blog/${article.slug}`}

@@ -287,7 +287,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         )}
 
         {/* Author Bio Box */}
-        <div className="mt-12 rounded-2xl border border-[#e5ddd3] bg-[#F7F6EE] p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-5">
+        <div className="scroll-reveal-card mt-12 rounded-2xl border border-[#e5ddd3] bg-[#F7F6EE] p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:items-start gap-5">
           <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-full border border-[#e5ddd3] bg-[#F7F4DE] sm:h-24 sm:w-24">
             <Image
               src="/images/507-head-logo-brown.png"
@@ -348,7 +348,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                 <Link
                   key={rel.id}
                   href={`/blog/${rel.slug}`}
-                  className="group flex flex-col overflow-hidden rounded-xl border border-[#e5ddd3] bg-[#F7F6EE] transition hover:-translate-y-1 hover:shadow-md"
+                  className="scroll-reveal-card group flex flex-col overflow-hidden rounded-xl border border-[#e5ddd3] bg-[#F7F6EE] transition hover:-translate-y-1 hover:shadow-md"
                 >
                   <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#eee]">
                     <Image

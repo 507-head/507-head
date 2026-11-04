@@ -460,42 +460,48 @@ export default function PublicSiteChrome({
       return;
 
     const observed = new WeakSet<Element>();
+    const animations = new Set<Animation>();
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (!entry.isIntersecting) continue;
           const heading = entry.target;
-          const distance = window.matchMedia("(max-width: 639px)").matches
-            ? 20
-            : 40;
-          const timing = { duration: 750, easing: "ease-out" };
+          const isMobile = window.matchMedia("(max-width: 639px)").matches;
+          const isTablet = window.matchMedia("(max-width: 1023px)").matches;
+          const distance = isMobile ? 16 : isTablet ? 32 : 48;
+          const reveal = (
+            element: Element,
+            left: boolean,
+            pseudoElement?: string,
+          ) => {
+            const animation = element.animate(
+              [
+                { opacity: 0, translate: `${left ? -distance : distance}px 0` },
+                { translate: "0 0" },
+              ],
+              {
+                duration: isMobile ? 450 : isTablet ? 550 : 750,
+                easing: "ease-out",
+                ...(pseudoElement ? { pseudoElement } : {}),
+              },
+            );
+            animations.add(animation);
+            animation.onfinish = () => animations.delete(animation);
+          };
           if (heading.matches(".latest-news-heading__content")) {
-            heading.animate(
-              [{ translate: `-${distance}px 0` }, { translate: "0 0" }],
-              { ...timing, pseudoElement: "::before" },
-            );
-            heading.animate(
-              [{ translate: `${distance}px 0` }, { translate: "0 0" }],
-              { ...timing, pseudoElement: "::after" },
-            );
+            reveal(heading, true, "::before");
+            reveal(heading, false, "::after");
           } else {
             const title = heading.querySelector("h3");
             heading
               .querySelectorAll(".home-history-heading__image")
               .forEach((image) => {
-                const left =
+                const left = Boolean(
                   title &&
-                  Boolean(
-                    image.compareDocumentPosition(title) &
+                  image.compareDocumentPosition(title) &
                     Node.DOCUMENT_POSITION_FOLLOWING,
-                  );
-                image.animate(
-                  [
-                    { translate: `${left ? -distance : distance}px 0` },
-                    { translate: "0 0" },
-                  ],
-                  timing,
                 );
+                reveal(image, left);
               });
           }
           observer.unobserve(heading);
@@ -521,6 +527,7 @@ export default function PublicSiteChrome({
     return () => {
       changes.disconnect();
       observer.disconnect();
+      animations.forEach((animation) => animation.cancel());
     };
   }, [pathname]);
   useEffect(() => {
@@ -531,31 +538,77 @@ export default function PublicSiteChrome({
       return;
 
     const observed = new WeakSet<Element>();
+    const pendingCards = new Map<Element, Animation>();
+    const animations = new Set<Animation>();
+    const nextStart = new WeakMap<Element, number>();
+    const revealDuration = 450;
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const fromRight = entry.target.closest(".scroll-reveal-from-right");
-          const distance = window.matchMedia("(max-width: 639px)").matches
-            ? 20
-            : 36;
-          entry.target.animate(
-            [
-              { translate: `${fromRight ? distance : -distance}px 0` },
-              { translate: "0 0" },
-            ],
-            { duration: 600, easing: "ease-out" },
+        // Keep each section's sequence independent, including streamed cards.
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) =>
+            a.target.compareDocumentPosition(b.target) &
+            Node.DOCUMENT_POSITION_FOLLOWING
+              ? -1
+              : 1,
           );
-          observer.unobserve(entry.target);
+        const now = performance.now();
+        const isMobile = window.matchMedia("(max-width: 639px)").matches;
+        const isTablet = window.matchMedia("(max-width: 1023px)").matches;
+        const compact = isMobile || isTablet;
+        const duration = isMobile ? 320 : isTablet ? 380 : revealDuration;
+        const stagger = isMobile ? 75 : isTablet ? 105 : revealDuration;
+        visible.forEach(({ target: card }) => {
+          const section = card.closest("section") ?? card.parentElement ?? card;
+          // Fast swipes should not leave mobile/tablet cards waiting in a queue.
+          const delay = Math.min(
+            compact ? 210 : Infinity,
+            Math.max(0, (nextStart.get(section) ?? now) - now),
+          );
+          nextStart.set(section, now + delay + stagger);
+          const fromRight = card.closest(".scroll-reveal-from-right");
+          const distance = isMobile ? 20 : isTablet ? 36 : 64;
+          const animation = card.animate(
+            [
+              {
+                opacity: 0,
+                translate: `${fromRight ? distance : -distance}px 0`,
+              },
+              { opacity: 1, translate: "0 0" },
+            ],
+            {
+              duration,
+              delay,
+              easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+              fill: "backwards",
+            },
+          );
+          // The reveal now hides the card during its delay.
+          pendingCards.get(card)?.cancel();
+          pendingCards.delete(card);
+          animations.add(animation);
+          animation.onfinish = () => animations.delete(animation);
+          observer.unobserve(card);
         });
       },
-      { threshold: 0.25 },
+      // A tall card must also reveal in a short landscape viewport.
+      { threshold: 0, rootMargin: "0px 0px -24px 0px" },
     );
 
     const observeCards = () => {
       document.querySelectorAll(".scroll-reveal-card").forEach((card) => {
         if (!observed.has(card)) {
           observed.add(card);
+          // Streamed cards may still be hydrating. Hide them without changing
+          // React-owned attributes such as className or style.
+          pendingCards.set(
+            card,
+            card.animate([{ opacity: 0 }, { opacity: 0 }], {
+              duration: 1,
+              fill: "both",
+            }),
+          );
           observer.observe(card);
         }
       });
@@ -566,6 +619,8 @@ export default function PublicSiteChrome({
     return () => {
       changes.disconnect();
       observer.disconnect();
+      animations.forEach((animation) => animation.cancel());
+      pendingCards.forEach((animation) => animation.cancel());
     };
   }, [pathname]);
   useEffect(() => {
